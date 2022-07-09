@@ -27,7 +27,7 @@ public class TruckService {
             final Truck truck = new Truck(
                     "Model-" + RANDOM.nextInt(1000),
                     getRandomManufacturer(),
-                    BigDecimal.valueOf(RANDOM.nextDouble(1000.0)),
+                    BigDecimal.valueOf(RANDOM.nextDouble() * 1000),
                     "Model-" + RANDOM.nextInt(1000),
                     RANDOM.nextInt(4000)
             );
