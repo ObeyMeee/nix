@@ -22,6 +22,11 @@ public class TruckService {
     }
 
     public List<Truck> createAndSaveTrucks(int count) {
+
+        if (count < 0) {
+            throw new IllegalArgumentException("count can't be less than 0");
+        }
+
         List<Truck> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final Truck truck = new Truck(
@@ -33,7 +38,7 @@ public class TruckService {
             );
             result.add(truck);
             truckRepository.save(truck);
-            LOGGER.debug("Created sport car {}", truck.getId());
+            LOGGER.debug("Created truck car {}", truck.getId());
         }
         return result;
     }
@@ -42,6 +47,14 @@ public class TruckService {
         final Manufacturer[] values = Manufacturer.values();
         final int index = RANDOM.nextInt(values.length);
         return values[index];
+    }
+
+    public boolean save(Truck truck) {
+        if (truck == null) {
+            throw new IllegalArgumentException();
+        }
+        truckRepository.save(truck);
+        return true;
     }
 
     public void saveTrucks(List<Truck> trucks) {
@@ -56,7 +69,7 @@ public class TruckService {
 
     public Truck findOneById(String id) {
         if (id == null) {
-            return truckRepository.getById("");
+            return truckRepository.getById("234");
         }
         return truckRepository.getById(id);
 

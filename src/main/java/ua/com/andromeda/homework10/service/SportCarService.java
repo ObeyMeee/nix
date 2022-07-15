@@ -22,6 +22,10 @@ public class SportCarService {
     }
 
     public List<SportCar> createAndSaveSportCars(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("count can't be less than 0");
+        }
+
         List<SportCar> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final SportCar sportCar = new SportCar(
@@ -56,9 +60,17 @@ public class SportCarService {
 
     public SportCar findOneById(String id) {
         if (id == null) {
-            return sportCarRepository.getById("");
+            return sportCarRepository.getById("234");
         }
         return sportCarRepository.getById(id);
 
+    }
+
+    public boolean save(SportCar sportCar) {
+        if (sportCar == null) {
+            throw new IllegalArgumentException();
+        }
+        sportCarRepository.save(sportCar);
+        return true;
     }
 }

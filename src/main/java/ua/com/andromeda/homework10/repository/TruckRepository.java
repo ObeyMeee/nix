@@ -29,7 +29,7 @@ public class TruckRepository implements CrudRepository<Truck> {
     }
 
     @Override
-    public void save(Truck truck) {
+    public boolean save(Truck truck) {
         if (truck == null) {
             throw new IllegalArgumentException("sport car must not be null");
         }
@@ -37,6 +37,7 @@ public class TruckRepository implements CrudRepository<Truck> {
             truck.setPrice(BigDecimal.valueOf(-1));
         }
         trucks.add(truck);
+        return true;
     }
 
     @Override
@@ -55,18 +56,9 @@ public class TruckRepository implements CrudRepository<Truck> {
         }
     }
 
-    public boolean updateByBodyType(String bodyType, Truck copyFrom) {
-        for (Truck truck : trucks) {
-            if (truck.getBodyType().equals(bodyType)) {
-                SportCarCopy.copy(copyFrom, truck);
-            }
-        }
-        return true;
-    }
-
     @Override
-    public void delete(String id) {
-        trucks.removeIf(truck -> truck.getId().equals(id));
+    public boolean delete(String id) {
+        return trucks.removeIf(truck -> truck.getId().equals(id));
 
     }
 

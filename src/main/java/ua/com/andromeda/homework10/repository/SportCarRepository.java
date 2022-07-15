@@ -29,20 +29,21 @@ public class SportCarRepository implements CrudRepository<SportCar> {
     }
 
     @Override
-    public void save(SportCar sportCar) {
+    public boolean save(SportCar sportCar) {
         if (sportCar == null) {
-            throw new IllegalArgumentException("sport car must not be null");
+            throw new IllegalArgumentException("sport car cannot be null");
         }
         if (sportCar.getPrice().equals(BigDecimal.ZERO)) {
             sportCar.setPrice(BigDecimal.valueOf(-1));
         }
         sportCars.add(sportCar);
+        return true;
     }
 
     @Override
     public void saveAll(List<SportCar> sportCarsToAdd) {
         if (sportCarsToAdd == null) {
-            throw new IllegalArgumentException("auto cannot be null");
+            throw new IllegalArgumentException("sport car cannot be null");
         }
         sportCars.addAll(sportCarsToAdd);
     }
@@ -55,18 +56,9 @@ public class SportCarRepository implements CrudRepository<SportCar> {
         }
     }
 
-    public boolean updateByBodyType(String bodyType, SportCar copyFrom) {
-        for (SportCar sportCar : sportCars) {
-            if (sportCar.getBodyType().equals(bodyType)) {
-                SportCarCopy.copy(copyFrom, sportCar);
-            }
-        }
-        return true;
-    }
-
     @Override
-    public void delete(String id) {
-        sportCars.removeIf(sportCar -> sportCar.getId().equals(id));
+    public boolean delete(String id) {
+        return sportCars.removeIf(sportCar -> sportCar.getId().equals(id));
 
     }
 

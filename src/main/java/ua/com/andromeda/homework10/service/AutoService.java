@@ -22,6 +22,10 @@ public class AutoService {
     }
 
     public List<Auto> createAndSaveAutos(int count) {
+        if (count < 0) {
+            throw new IllegalArgumentException("count can't be less than 0");
+        }
+
         List<Auto> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final Auto auto = new Auto(
@@ -55,9 +59,17 @@ public class AutoService {
 
     public Auto findOneById(String id) {
         if (id == null) {
-            return autoRepository.getById("");
-        } else {
-            return autoRepository.getById(id);
+            return autoRepository.getById("234");
         }
+        return autoRepository.getById(id);
     }
+
+    public boolean save(Auto auto) {
+        if (auto == null) {
+            throw new IllegalArgumentException();
+        }
+        autoRepository.save(auto);
+        return true;
+    }
+
 }

@@ -7,8 +7,9 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class SportCar extends Auto{
+public class SportCar extends Auto {
     private int maxSpeed;
+
     public SportCar(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, int maxSpeed) {
         super(model, manufacturer, price, bodyType);
         this.maxSpeed = maxSpeed;
