@@ -10,6 +10,8 @@ import ua.com.andromeda.homework10.model.Auto;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.repository.AutoRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,7 +75,19 @@ public class AutoServiceTest {
     public void printAll() {
         List<Auto> autos = Arrays.asList(createSimpleAuto(), createSimpleAuto(), createSimpleAuto());
         Mockito.when(autoRepository.getAll()).thenReturn(autos);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
         target.printAll();
+        StringBuilder stringBuilder = autoListToStringBuilder(autos);
+        assertEquals(stringBuilder.toString(), outputStream.toString());
+    }
+
+    private StringBuilder autoListToStringBuilder(List<Auto> autos) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Auto auto: autos) {
+            stringBuilder.append(auto).append(System.lineSeparator());
+        }
+        return stringBuilder;
     }
 
     @Test

@@ -10,6 +10,8 @@ import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.model.SportCar;
 import ua.com.andromeda.homework10.repository.SportCarRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +61,7 @@ public class SportCarServiceTest {
         Mockito.verify(sportCarRepository, Mockito.times(5)).save(Mockito.any());
     }
 
-    private SportCar createSimpleAuto() {
+    private SportCar createSimpleSportCar() {
         return new SportCar("simple model", Manufacturer.BMW, BigDecimal.TEN, "body type", 2000);
     }
 
@@ -71,9 +73,21 @@ public class SportCarServiceTest {
 
     @Test
     public void printAll() {
-        List<SportCar> sportCars = Arrays.asList(createSimpleAuto(), createSimpleAuto(), createSimpleAuto());
+        List<SportCar> sportCars = Arrays.asList(createSimpleSportCar(), createSimpleSportCar(), createSimpleSportCar());
         Mockito.when(sportCarRepository.getAll()).thenReturn(sportCars);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
         target.printAll();
+        StringBuilder stringBuilder = sportCarListToStringBuilder(sportCars);
+        assertEquals(stringBuilder.toString(), outputStream.toString());
+    }
+
+    private StringBuilder sportCarListToStringBuilder(List<SportCar> sportCars) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (SportCar sportCar: sportCars) {
+            stringBuilder.append(sportCar).append(System.lineSeparator());
+        }
+        return stringBuilder;
     }
 
     @Test

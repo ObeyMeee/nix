@@ -10,6 +10,8 @@ import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.model.Truck;
 import ua.com.andromeda.homework10.repository.TruckRepository;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
@@ -59,7 +61,7 @@ public class TruckServiceTest {
         Mockito.verify(truckRepository, Mockito.times(5)).save(Mockito.any());
     }
 
-    private Truck createSimpleAuto() {
+    private Truck createSimpleTruck() {
         return new Truck("simple model", Manufacturer.BMW, BigDecimal.TEN, "body type", 2000);
     }
 
@@ -71,9 +73,21 @@ public class TruckServiceTest {
 
     @Test
     public void printAll() {
-        List<Truck> trucks = Arrays.asList(createSimpleAuto(), createSimpleAuto(), createSimpleAuto());
+        List<Truck> trucks = Arrays.asList(createSimpleTruck(), createSimpleTruck(), createSimpleTruck());
         Mockito.when(truckRepository.getAll()).thenReturn(trucks);
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(outputStream));
         target.printAll();
+        StringBuilder stringBuilder = truckListToStringBuilder(trucks);
+        assertEquals(stringBuilder.toString(), outputStream.toString());
+    }
+
+    private StringBuilder truckListToStringBuilder(List<Truck> trucks) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Truck truck: trucks) {
+            stringBuilder.append(truck).append(System.lineSeparator());
+        }
+        return stringBuilder;
     }
 
     @Test
