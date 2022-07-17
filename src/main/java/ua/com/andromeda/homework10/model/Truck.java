@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Getter
 @Setter
@@ -15,6 +16,22 @@ public class Truck extends Auto {
 
         super(model, manufacturer, price, bodyType);
         this.maxCarryingCapacity = maxCarryingCapacity;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Truck truck)) return false;
+        return Objects.equals(model, truck.model)
+                && Objects.equals(price, truck.price)
+                && manufacturer == truck.manufacturer
+                && Objects.equals(bodyType, truck.bodyType)
+                && Objects.equals(maxCarryingCapacity, truck.maxCarryingCapacity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, price, manufacturer, bodyType, maxCarryingCapacity);
     }
 
     @Override

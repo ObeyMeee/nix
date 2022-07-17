@@ -5,6 +5,7 @@ import ua.com.andromeda.homework10.model.SportCar;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class SportCarRepository implements CrudRepository<SportCar> {
     private final List<SportCar> sportCars;
@@ -14,13 +15,10 @@ public class SportCarRepository implements CrudRepository<SportCar> {
     }
 
     @Override
-    public SportCar getById(String id) {
-        for (SportCar sportCar : sportCars) {
-            if (sportCar.getId().equals(id)) {
-                return sportCar;
-            }
-        }
-        return null;
+    public Optional<SportCar> findById(String id) {
+        return sportCars.stream()
+                .filter(sportCar -> sportCar.getId().equals(id))
+                .findAny();
     }
 
     @Override
@@ -50,16 +48,15 @@ public class SportCarRepository implements CrudRepository<SportCar> {
 
     @Override
     public void update(SportCar sportCar) {
-        final SportCar founded = getById(sportCar.getId());
-        if (founded != null) {
-            SportCarCopy.copy(sportCar, founded);
-        }
+        String id = sportCar.getId();
+        Optional<SportCar> optionalSportCar = findById(id);
+        optionalSportCar.ifPresentOrElse(founded -> SportCarRepository.SportCarCopy.copy(sportCar, founded),
+                () -> save(sportCar));
     }
 
     @Override
     public boolean delete(String id) {
         return sportCars.removeIf(sportCar -> sportCar.getId().equals(id));
-
     }
 
     private static class SportCarCopy {

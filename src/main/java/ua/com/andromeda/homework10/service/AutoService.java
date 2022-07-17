@@ -2,6 +2,7 @@ package ua.com.andromeda.homework10.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.com.andromeda.homework10.dto.AutoDto;
 import ua.com.andromeda.homework10.model.Auto;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.repository.AutoRepository;
@@ -9,6 +10,7 @@ import ua.com.andromeda.homework10.repository.AutoRepository;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 public class AutoService {
@@ -17,8 +19,16 @@ public class AutoService {
     private static final Random RANDOM = new Random();
     private final AutoRepository autoRepository;
 
+    private final Auto simpleAuto;
+
     public AutoService(AutoRepository autoRepository) {
         this.autoRepository = autoRepository;
+        simpleAuto = createSimpleAuto();
+        autoRepository.save(simpleAuto);
+    }
+
+    private Auto createSimpleAuto() {
+        return new Auto("new Model", Manufacturer.BMW, BigDecimal.TEN, "body type");
     }
 
     public List<Auto> createAndSaveAutos(int count) {
@@ -57,11 +67,9 @@ public class AutoService {
         }
     }
 
-    public Auto findOneById(String id) {
-        if (id == null) {
-            return autoRepository.getById("234");
-        }
-        return autoRepository.getById(id);
+    public Optional<Auto> findOneById(String id) {
+        return id == null ? autoRepository.findById("") :
+                autoRepository.findById(id);
     }
 
     public boolean save(Auto auto) {
@@ -72,4 +80,70 @@ public class AutoService {
         return true;
     }
 
+    public void showOptionalExamples() {
+        String id = simpleAuto.getId();
+        filter(id);
+        ifPresentUpdateAutoOrElseSave(simpleAuto);
+        ifPresent(id);
+        orElse(id);
+        orElseGet(id);
+        map(id);
+        try {
+            orElseThrow(id);
+        } catch (RuntimeException exception) {
+            System.err.println(exception.getMessage());
+        }
+        or(id);
+    }
+
+    public void filter(String id) {
+        findOneById(id);
+    }
+
+    public void ifPresentUpdateAutoOrElseSave(Auto auto) {
+        autoRepository.update(auto);
+    }
+
+
+    public void ifPresent(String id) {
+        findOneById(id).ifPresent(auto -> System.out.println("Founded auto ==> " + auto));
+    }
+
+    public Auto orElse(String id) {
+        return findOneById(id).orElse(createSimpleAuto());
+
+    }
+
+    public Auto orElseGet(String id) {
+        Auto auto = findOneById(id).orElseGet(() -> {
+            System.out.println("Creating new auto...");
+            String model = "model-23";
+            return new Auto(model, Manufacturer.OPEL, BigDecimal.ZERO, "body22");
+        });
+        System.out.println("auto has been successfully created");
+        return auto;
+    }
+
+    public Optional<AutoDto> map(String id) {
+        Optional<AutoDto> autoDto = findOneById(id)
+                .map(auto -> new AutoDto(auto.getModel(), auto.getPrice(), auto.getManufacturer(), auto.getBodyType()));
+
+        return autoDto;
+    }
+
+    public Auto orElseThrow(String id) {
+        Auto auto = null;
+        auto = findOneById(id).orElseThrow(() -> {
+            throw new RuntimeException("Cannot find auto by id = '" + id + "'");
+        });
+        return auto;
+    }
+
+    public Optional<Auto> or(String id) {
+        Optional<Auto> auto = findOneById(id).or(
+                () -> Optional.of(new Auto("new Model", Manufacturer.BMW,
+                        BigDecimal.TEN, "body type")));
+
+        return auto;
+    }
 }
