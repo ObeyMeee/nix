@@ -9,6 +9,7 @@ import ua.com.andromeda.homework10.model.Truck;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class TruckRepositoryTest {
@@ -25,16 +26,16 @@ public class TruckRepositoryTest {
     @Test
     public void getById_notExist() {
         target.save(truck);
-        Truck actual = target.getById("not exist");
-        Assertions.assertNull(actual);
+        Optional<Truck> actual = target.findById("not exist");
+        Assertions.assertEquals(Optional.empty(), actual);
     }
 
 
     @Test
     public void getById_exist() {
         target.save(truck);
-        Truck actual = target.getById(truck.getId());
-        Assertions.assertEquals(truck, actual);
+        Optional<Truck> actual = target.findById(truck.getId());
+        Assertions.assertEquals(truck, actual.get());
     }
 
 

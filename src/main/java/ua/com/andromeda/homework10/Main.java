@@ -13,22 +13,11 @@ public class Main {
     private static final TruckService TRUCK_SERVICE = new TruckService(new TruckRepository());
 
     public static void main(String[] args) {
-        AUTO_SERVICE.createAndSaveAutos(5);
-        AUTO_SERVICE.printAll();
-        delimited();
+        AUTO_SERVICE.showOptionalExamples();
+        System.out.println("-".repeat(15));
+        SPORT_CAR_SERVICE.showOptionalExamples();
+        System.out.println("-".repeat(15));
+        TRUCK_SERVICE.showOptionalExamples();
 
-        SPORT_CAR_SERVICE.createAndSaveSportCars(5);
-        SPORT_CAR_SERVICE.printAll();
-        delimited();
-
-        TRUCK_SERVICE.createAndSaveTrucks(5);
-        TRUCK_SERVICE.printAll();
-
-    }
-
-    private static void delimited() {
-        System.out.println();
-        System.out.println("--------------------------------");
-        System.out.println();
     }
 }

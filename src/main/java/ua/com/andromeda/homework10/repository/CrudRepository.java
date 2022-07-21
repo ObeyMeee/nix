@@ -2,9 +2,10 @@ package ua.com.andromeda.homework10.repository;
 
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CrudRepository<T> {
-    T getById(String id);
+    Optional<T> findById(String id);
 
     List<T> getAll();
 

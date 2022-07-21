@@ -5,6 +5,7 @@ import ua.com.andromeda.homework10.model.Auto;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 public class AutoRepository implements CrudRepository<Auto> {
     private final List<Auto> autos;
@@ -14,13 +15,10 @@ public class AutoRepository implements CrudRepository<Auto> {
     }
 
     @Override
-    public Auto getById(String id) {
-        for (Auto auto : autos) {
-            if (auto.getId().equals(id)) {
-                return auto;
-            }
-        }
-        return null;
+    public Optional<Auto> findById(String id) {
+        return autos.stream()
+                .filter(auto -> auto.getId().equals(id))
+                .findAny();
     }
 
     @Override
@@ -50,10 +48,10 @@ public class AutoRepository implements CrudRepository<Auto> {
 
     @Override
     public void update(Auto auto) {
-        final Auto founded = getById(auto.getId());
-        if (founded != null) {
-            AutoCopy.copy(auto, founded);
-        }
+        String id = auto.getId();
+        Optional<Auto> optionalAuto = findById(id);
+        optionalAuto.ifPresentOrElse(founded -> AutoCopy.copy(auto, founded),
+                () -> save(auto));
     }
 
     @Override

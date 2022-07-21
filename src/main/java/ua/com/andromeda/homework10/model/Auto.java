@@ -9,7 +9,7 @@ import java.util.Objects;
 @Getter
 @Setter
 public class Auto extends Vehicle {
-    private String bodyType;
+    protected String bodyType;
 
     public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType) {
         super(model, manufacturer, price);
@@ -17,8 +17,25 @@ public class Auto extends Vehicle {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+
+        if (obj == null || !obj.getClass().getSimpleName().equals(Auto.class.getSimpleName())) {
+            return false;
+        }
+        Auto other = (Auto) obj;
+
+        return getManufacturer().equals(other.getManufacturer()) &&
+                getModel().equals(other.getModel()) &&
+                getPrice().equals(other.getPrice()) &&
+                getBodyType().equals(other.getBodyType());
+    }
+
+    @Override
     public int hashCode() {
-        return Objects.hash(bodyType);
+        return Objects.hash(getModel(), getBodyType(), getManufacturer(), getPrice());
     }
 
     @Override

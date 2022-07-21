@@ -9,6 +9,7 @@ import ua.com.andromeda.homework10.model.Manufacturer;
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 
 public class AutoRepositoryTest {
@@ -25,16 +26,16 @@ public class AutoRepositoryTest {
     @Test
     public void getById_notExist() {
         target.save(auto);
-        Auto actual = target.getById("not exist");
-        Assertions.assertNull(actual);
+        Optional<Auto> actual = target.findById("not exist");
+        Assertions.assertEquals(Optional.empty(), actual);
     }
 
 
     @Test
     public void getById_exist() {
         target.save(auto);
-        Auto actual = target.getById(auto.getId());
-        Assertions.assertEquals(auto, actual);
+        Optional<Auto> actual = target.findById(auto.getId());
+        Assertions.assertEquals(auto, actual.get());
     }
 
 
