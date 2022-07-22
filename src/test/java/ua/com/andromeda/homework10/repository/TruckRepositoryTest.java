@@ -35,6 +35,7 @@ public class TruckRepositoryTest {
     public void getById_exist() {
         target.save(truck);
         Optional<Truck> actual = target.findById(truck.getId());
+        Assertions.assertTrue(actual.isPresent());
         Assertions.assertEquals(truck, actual.get());
     }
 

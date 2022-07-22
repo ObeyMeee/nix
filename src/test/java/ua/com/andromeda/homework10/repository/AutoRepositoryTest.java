@@ -35,6 +35,7 @@ public class AutoRepositoryTest {
     public void getById_exist() {
         target.save(auto);
         Optional<Auto> actual = target.findById(auto.getId());
+        Assertions.assertTrue(actual.isPresent());
         Assertions.assertEquals(auto, actual.get());
     }
 

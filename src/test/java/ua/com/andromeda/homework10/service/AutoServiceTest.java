@@ -6,7 +6,6 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 import ua.com.andromeda.homework10.StringMatchers;
-import ua.com.andromeda.homework10.dto.AutoDto;
 import ua.com.andromeda.homework10.model.Auto;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.repository.AutoRepository;
@@ -34,40 +33,41 @@ public class AutoServiceTest {
     }
 
     private Auto createSimpleAuto() {
-        return new Auto("simple model", Manufacturer.BMW, BigDecimal.TEN, "body type");
+        return new Auto("new Model", Manufacturer.BMW, BigDecimal.TEN,
+                "body type");
     }
 
 
     @Test
-    public void createAndSaveAutos_negativeCount() {
+    public void createAndSaveVehicles_negativeCount() {
         String message = "count can't be less than 0";
         assertThrows(message,
                 IllegalArgumentException.class,
-                () -> target.createAndSaveAutos(-1)
+                () -> target.createAndSaveVehicles(-1)
         );
     }
 
     @Test
-    public void createAndSaveAutos_zeroCount() {
+    public void createAndSaveVehicles_zeroCount() {
         List<Auto> expected = Collections.EMPTY_LIST;
-        List<Auto> actual = target.createAndSaveAutos(0);
+        List<Auto> actual = target.createAndSaveVehicles(0);
         assertEquals(expected, actual);
     }
 
 
     @Test
-    public void createAndSaveAutos_countOne() {
-        List<Auto> actual = target.createAndSaveAutos(1);
+    public void createAndSaveVehicles_countOne() {
+        List<Auto> actual = target.createAndSaveVehicles(1);
         assertEquals(1, actual.size());
-        Mockito.verify(autoRepository, Mockito.times(2)).save(Mockito.any());
+        Mockito.verify(autoRepository, Mockito.times(1)).save(Mockito.any());
     }
 
 
     @Test
-    public void createAndSaveAutos_CountFive() {
-        List<Auto> actual = target.createAndSaveAutos(5);
+    public void createAndSaveVehicles_CountFive() {
+        List<Auto> actual = target.createAndSaveVehicles(5);
         assertEquals(5, actual.size());
-        Mockito.verify(autoRepository, Mockito.times(6)).save(Mockito.any());
+        Mockito.verify(autoRepository, Mockito.times(5)).save(Mockito.any());
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -165,32 +165,15 @@ public class AutoServiceTest {
 
     @Test
     public void orElseGet_fail() {
-        Auto expected = new Auto("model-23", Manufacturer.OPEL, BigDecimal.ZERO, "body22");
+        Auto expected = createSimpleAuto();
         Auto founded = target.orElseGet("");
         assertEquals(expected, founded);
     }
 
     @Test
-    public void map_success() {
-        Auto auto = createAndSaveSimpleAuto();
-        when(autoRepository.findById(auto.getId())).thenReturn(Optional.of(auto));
-        Optional<AutoDto> actual = target.map(auto.getId());
-        assertTrue(actual.isPresent());
-        Optional<AutoDto> expected = Optional.of(new AutoDto(auto.getModel(), auto.getPrice(),
-                auto.getManufacturer(), auto.getBodyType()));
-        assertEquals(expected, actual);
-    }
-
-    @Test
-    public void map_fail() {
-        Optional<AutoDto> autoDto = target.map("");
-        assertFalse(autoDto.isPresent());
-    }
-
-    @Test
     public void orElseThrow_success() {
         Auto auto = createSimpleAuto();
-        when(autoRepository.findById(auto.getId())).thenReturn(Optional.ofNullable(auto));
+        when(autoRepository.findById(auto.getId())).thenReturn(Optional.of(auto));
         Auto actual = target.orElseThrow(auto.getId());
         assertEquals(auto, actual);
     }
