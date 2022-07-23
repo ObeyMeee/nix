@@ -35,6 +35,7 @@ public class SportCarRepositoryTest {
     public void getById_exist() {
         target.save(sportCar);
         Optional<SportCar> actual = target.findById(sportCar.getId());
+        Assertions.assertTrue(actual.isPresent());
         Assertions.assertEquals(sportCar, actual.get());
     }
 
