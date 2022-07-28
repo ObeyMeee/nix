@@ -29,7 +29,7 @@ public class AutoServiceTest {
     @Before
     public void setUp() {
         autoRepository = Mockito.mock(AutoRepository.class);
-        target = new AutoService(autoRepository);
+        target = AutoService.getInstance();
     }
 
     private Auto createSimpleAuto() {

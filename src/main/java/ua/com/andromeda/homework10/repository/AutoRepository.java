@@ -8,10 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class AutoRepository implements CrudRepository<Auto> {
+    private static AutoRepository instance;
     private final List<Auto> autos;
 
-    public AutoRepository() {
+    private AutoRepository() {
         autos = new LinkedList<>();
+    }
+
+    public static AutoRepository getInstance() {
+        if (instance == null) {
+            instance = new AutoRepository();
+        }
+        return instance;
     }
 
     @Override
