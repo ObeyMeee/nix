@@ -8,10 +8,19 @@ import java.util.List;
 import java.util.Optional;
 
 public class TruckRepository implements CrudRepository<Truck> {
+    private static TruckRepository instance;
+
     private final List<Truck> trucks;
 
-    public TruckRepository() {
+    private TruckRepository() {
         trucks = new LinkedList<>();
+    }
+
+    public static TruckRepository getInstance() {
+        if (instance == null) {
+            instance = new TruckRepository();
+        }
+        return instance;
     }
 
     @Override

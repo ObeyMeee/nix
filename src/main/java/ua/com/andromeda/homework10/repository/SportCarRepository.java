@@ -8,10 +8,18 @@ import java.util.List;
 import java.util.Optional;
 
 public class SportCarRepository implements CrudRepository<SportCar> {
+    private static SportCarRepository instance;
     private final List<SportCar> sportCars;
 
-    public SportCarRepository() {
+    private SportCarRepository() {
         sportCars = new LinkedList<>();
+    }
+
+    public static SportCarRepository getInstance() {
+        if (instance == null) {
+            instance = new SportCarRepository();
+        }
+        return instance;
     }
 
     @Override

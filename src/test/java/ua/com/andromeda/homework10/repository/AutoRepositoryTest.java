@@ -19,7 +19,7 @@ public class AutoRepositoryTest {
 
     @Before
     public void setUp() {
-        target = new AutoRepository();
+        target = AutoRepository.getInstance();
         auto = new Auto("Model", Manufacturer.BMW, BigDecimal.TEN, "BodyType");
     }
 
