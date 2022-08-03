@@ -24,13 +24,23 @@ public class SportCarService extends VehicleService<SportCar> {
     @Override
     public SportCar createRandomVehicle() {
         String model = "new Model_" + RANDOM.nextInt(10);
-        return new SportCar(model, getRandomManufacturer(),
-                BigDecimal.valueOf(RANDOM.nextInt(10)), "body type", RANDOM.nextInt(400));
+        return new SportCar(model,
+                getRandomManufacturer(),
+                BigDecimal.valueOf(RANDOM.nextInt(10)),
+                "body type",
+                generateRandomListDetails(),
+                RANDOM.nextInt(400));
     }
 
     @Override
     protected SportCar createSimpleVehicle() {
-        return new SportCar("new Model", Manufacturer.BMW,
-                BigDecimal.TEN, "body type", 400);
+        return new SportCar("new Model",
+                            Manufacturer.BMW,
+                            BigDecimal.TEN,
+                            "body type",
+                            simpleDetailsList,
+                            400);
     }
+
+
 }

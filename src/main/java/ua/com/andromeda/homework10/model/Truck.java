@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -12,9 +13,9 @@ public class Truck extends Auto {
     private int maxCarryingCapacity;
 
     public Truck(String model, Manufacturer manufacturer,
-                 BigDecimal price, String bodyType, int maxCarryingCapacity) {
+                 BigDecimal price, String bodyType, List<String> details, int maxCarryingCapacity) {
 
-        super(model, manufacturer, price, bodyType);
+        super(model, manufacturer, price, bodyType, details);
         this.maxCarryingCapacity = maxCarryingCapacity;
     }
 

@@ -23,13 +23,21 @@ public class TruckService extends VehicleService<Truck> {
 
     @Override
     public Truck createRandomVehicle() {
-        return new Truck("new Model", getRandomManufacturer(), BigDecimal.TEN,
-                "body type", RANDOM.nextInt(20000));
+        return new Truck("new Model",
+                            getRandomManufacturer(),
+                            BigDecimal.TEN,
+                            "body type",
+                            generateRandomListDetails(),
+                            RANDOM.nextInt(20000));
     }
 
     @Override
     protected Truck createSimpleVehicle() {
-        return new Truck("new Model", Manufacturer.BMW, BigDecimal.TEN,
-                "body type", 20000);
+        return new Truck("new Model",
+                        Manufacturer.BMW,
+                        BigDecimal.TEN,
+                        "body type",
+                        simpleDetailsList,
+                        20000);
     }
 }

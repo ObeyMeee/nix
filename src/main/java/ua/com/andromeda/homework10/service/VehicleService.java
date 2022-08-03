@@ -7,18 +7,42 @@ import ua.com.andromeda.homework10.model.Vehicle;
 import ua.com.andromeda.homework10.repository.CrudRepository;
 
 import java.math.BigDecimal;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public abstract class VehicleService<T extends Vehicle> {
+    protected final Predicate<T> vehicleHasPrice = vehicle -> !vehicle.getPrice().equals(BigDecimal.ZERO);
+    protected final Predicate<List<T>> listHasPrice = vehicles -> vehicles.stream().allMatch(vehicleHasPrice);
+
+    protected final Function<Map<String, Object>, T> function = map -> {
+        T vehicle = createSimpleVehicle();
+
+        BigDecimal price = (BigDecimal) map.get("price");
+        String model = (String) map.get("model");
+        Manufacturer manufacturer = (Manufacturer) map.get("manufacturer");
+        List<String> details = (List<String>) map.get("details");
+
+        vehicle.setPrice(price);
+        vehicle.setModel(model);
+        vehicle.setManufacturer(manufacturer);
+        vehicle.setDetails(details);
+        return vehicle;
+    };
     protected static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
     protected static final Random RANDOM = new Random();
+    protected final List<String> simpleDetailsList = List.of("details1", "details2", "details3");
+
     private final CrudRepository<T> repository;
 
     protected VehicleService(CrudRepository<T> repository) {
         this.repository = repository;
+    }
+
+    protected List<String> generateRandomListDetails() {
+        return List.of("details_" + RANDOM.nextInt(100), "details_" + RANDOM.nextInt(100),
+                "details_" + RANDOM.nextInt(100));
     }
 
 
@@ -144,10 +168,65 @@ public abstract class VehicleService<T extends Vehicle> {
     }
 
     public Optional<T> or(String id) {
-
         return findOneById(id).or(
                 () -> Optional.of(createSimpleVehicle()));
     }
 
 
+    public void printVehicles(BigDecimal price) {
+        List<T> vehicles = repository.getAll();
+        vehicles.stream()
+                .filter(vehicle -> vehicle.getPrice().compareTo(price) > 0)
+                .forEach(System.out::println);
+    }
+
+    public void printSummaryPrice() {
+        List<T> vehicles = repository.getAll();
+        vehicles.stream()
+                .map(Vehicle::getPrice)
+                .reduce(BigDecimal::add)
+                .ifPresent(summaryPrice -> System.out.println("Summary price ==> " + summaryPrice));
+
+    }
+
+    public void sortByModelAndRemoveDuplicatesToMap() {
+        List<T> vehicles = repository.getAll();
+        vehicles.stream()
+                .distinct()
+                .sorted(Comparator.comparing(Vehicle::getModel))
+                .collect(Collectors.toMap(Vehicle::getId,
+                                          Vehicle::getModel,
+                                         (vehicle, duplicatedVehicle) -> duplicatedVehicle,
+                        LinkedHashMap::new))
+                .forEach((key, value) -> System.out.printf("%s ==> %s%n", key, value));
+    }
+
+    public boolean hasDetail(String detail){
+        List<T> vehicles = repository.getAll();
+
+        return vehicles.stream()
+                .flatMap(vehicle -> vehicle.getDetails().stream())
+                .anyMatch(details -> details.equals(detail));
+
+    }
+    public void printVehiclePriceStatistics() {
+        List<T> vehicles = repository.getAll();
+        DoubleSummaryStatistics priceSummaryStatistics = vehicles.stream()
+                .mapToDouble(vehicle -> vehicle.getPrice().doubleValue())
+                .summaryStatistics();
+
+        System.out.println("priceSummaryStatistics = " + priceSummaryStatistics);
+    }
+
+    public void testAllVehiclesHasPrice() {
+        List<T> vehicles = getAll();
+        if (listHasPrice.test(vehicles)){
+            System.out.println("All autos has price");
+        }else {
+            System.out.println("some autos without price are founded");
+        }
+    }
+    public T getVehicleFromMap(Map<String, Object> map){
+        return function.apply(map);
+    }
 }
