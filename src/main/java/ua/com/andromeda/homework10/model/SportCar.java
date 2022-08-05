@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -11,8 +12,8 @@ import java.util.Objects;
 public class SportCar extends Auto {
     private int maxSpeed;
 
-    public SportCar(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, int maxSpeed) {
-        super(model, manufacturer, price, bodyType);
+    public SportCar(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, List<String> details, int maxSpeed) {
+        super(model, manufacturer, price, bodyType, details);
         this.maxSpeed = maxSpeed;
     }
 

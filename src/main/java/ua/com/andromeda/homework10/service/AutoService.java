@@ -24,13 +24,19 @@ public class AutoService extends VehicleService<Auto> {
 
     @Override
     public Auto createRandomVehicle() {
-        return new Auto("new Model", getRandomManufacturer(), BigDecimal.valueOf(RANDOM.nextDouble(500)),
-                "body type");
+        return new Auto("Model_" + RANDOM.nextInt(300),
+                        getRandomManufacturer(),
+                        BigDecimal.valueOf(RANDOM.nextDouble(500)),
+                        "body type",
+                        generateRandomListDetails());
     }
 
     @Override
     protected Auto createSimpleVehicle() {
-        return new Auto("new Model", Manufacturer.BMW, BigDecimal.TEN,
-                "body type");
+        return new Auto("new Model",
+                Manufacturer.BMW,
+                BigDecimal.TEN,
+                "body type",
+                simpleDetailsList);
     }
 }

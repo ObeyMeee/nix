@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Objects;
 
 @Getter
@@ -11,8 +12,8 @@ import java.util.Objects;
 public class Auto extends Vehicle {
     protected String bodyType;
 
-    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType) {
-        super(model, manufacturer, price);
+    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, List<String> details) {
+        super(model, manufacturer, price, details);
         this.bodyType = bodyType;
     }
 
@@ -45,6 +46,7 @@ public class Auto extends Vehicle {
                 ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
+                ", details=" + details +
                 ", manufacturer=" + manufacturer +
                 '}';
     }
