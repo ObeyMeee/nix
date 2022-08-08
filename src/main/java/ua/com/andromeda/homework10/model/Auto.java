@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -11,8 +12,20 @@ import java.util.Objects;
 @Setter
 public class Auto extends Vehicle {
     protected String bodyType;
+    protected int count;
+    private Engine engine;
+    private String currency;
+    private LocalDateTime created;
 
+    public Auto(){
+
+    }
     public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, List<String> details) {
+        super(model, manufacturer, price, details);
+        this.bodyType = bodyType;
+    }
+
+    public Auto(String model, Manufacturer manufacturer, BigDecimal price, List<String> details, String bodyType) {
         super(model, manufacturer, price, details);
         this.bodyType = bodyType;
     }
@@ -31,6 +44,8 @@ public class Auto extends Vehicle {
         return getManufacturer().equals(other.getManufacturer()) &&
                 getModel().equals(other.getModel()) &&
                 getPrice().equals(other.getPrice()) &&
+                getEngine().equals(other.getEngine()) &&
+                getCount() == other.getCount() &&
                 getBodyType().equals(other.getBodyType());
     }
 
@@ -47,6 +62,10 @@ public class Auto extends Vehicle {
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", details=" + details +
+                ", engine=" + engine +
+                ", count=" + count +
+                ", created=" + created+
+                ", currency=" + currency +
                 ", manufacturer=" + manufacturer +
                 '}';
     }

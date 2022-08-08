@@ -16,6 +16,9 @@ public abstract class Vehicle {
     protected Manufacturer manufacturer;
     protected List<String> details;
 
+    protected Vehicle(){
+        this.id = UUID.randomUUID().toString();
+    }
     protected Vehicle(String model, Manufacturer manufacturer, BigDecimal price, List<String> details) {
         this.id = UUID.randomUUID().toString();
         this.model = model;
