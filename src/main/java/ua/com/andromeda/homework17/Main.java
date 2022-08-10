@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 
 public class Main {
     private static final String JSON_FILE = "auto.json";
-    private static final  String XML_FILE = "auto.xml";
+    private static final String XML_FILE = "auto.xml";
 
     private static final String JSON_REGEX =
             "\"(\\w+)\":\\s\"(.+)\"|" +
@@ -61,14 +61,15 @@ public class Main {
     }
 
     private static Auto createAuto(Map<String, String> map) {
-        Auto auto = new Auto();
+        Auto auto = new Auto.Builder()
+                .setModel(map.get("model"))
+                .setManufacturer(Manufacturer.valueOf(map.get("manufacturer")))
+                .setCount(Integer.parseInt(map.get("count")))
+                .setBodyType(map.get("bodyType"))
+                .setCurrency(map.get("currency"))
+                .setPrice(new BigDecimal(map.get("price")))
+                .build();
 
-        auto.setModel(map.get("model"));
-        auto.setManufacturer(Manufacturer.valueOf(map.get("manufacturer")));
-        auto.setCount(Integer.parseInt(map.get("count")));
-        auto.setBodyType(map.get("bodyType"));
-        auto.setCurrency(map.get("currency"));
-        auto.setPrice(new BigDecimal(map.get("price")));
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'");
         LocalDateTime created = LocalDateTime.parse(map.get("created"), formatter);
