@@ -1,10 +1,13 @@
-package com.EXAMPLE.moDEL;
+package com.example.model;
 
 import lombok.Setter;
 
 @Setter
-public class NotifiableProduct extends Product {
-    protected String channel;
+public class NotifiableProduct extends Product implements AddressGenerator {
+
+    public NotifiableProduct() {
+        super(ProductType.NOTIFIABLE_PRODUCT);
+    }
 
     @Override
     public String generateAddressForNotification() {
@@ -12,18 +15,13 @@ public class NotifiableProduct extends Product {
     }
 
     @Override
-    public String getBasicInfo() {
+    public String toString() {
         return "NotifiableProduct{" +
-                "channel='" + channel + '\'' +
-                ", id=" + id +
+                "id=" + id +
                 ", available=" + available +
                 ", title='" + title + '\'' +
                 ", price=" + price +
+                ", channel='" + channel + '\'' +
                 '}';
-    }
-
-    @Override
-    public int getAmountInBundle() {
-        throw new UnsupportedOperationException("Product is not a bundle");
     }
 }

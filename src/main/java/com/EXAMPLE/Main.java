@@ -1,32 +1,19 @@
-package com.EXAMPLE;
+package com.example;
 
-import com.EXAMPLE.moDEL.NotifiableProduct;
-import com.EXAMPLE.moDEL.Product;
-import com.EXAMPLE.moDEL.ProductBundle;
+import com.example.model.Product;
+import com.example.utils.NotifiableProductUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-        ProductUtils utils = new ProductUtils();
-        List<Product> products = new ArrayList<>();
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.add(utils.generateRandomProduct());
-        products.forEach(it -> {
-            if (it instanceof ProductBundle) {
-                utils.saveProductBundle((ProductBundle) it);
-            } else if (it instanceof NotifiableProduct) {
-                utils.saveNotifiableProduct((NotifiableProduct) it);
-            }
-        });
+        NotifiableProductUtils notifiableProductUtils = new NotifiableProductUtils();
 
-        System.out.println(utils.getAll());
-        System.out.println("notifications sent: " + utils.filterNotifiableProductsAndSendNotifications());
+        List<Product> products = notifiableProductUtils.generateRandomProductList();
+        notifiableProductUtils.saveAll(products);
+        notifiableProductUtils.print();
+
+        System.out.println("\nNotifications sent: " + notifiableProductUtils.sendNotifications());
     }
+
 }

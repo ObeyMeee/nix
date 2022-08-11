@@ -1,15 +1,15 @@
-package com.EXAMPLE.moDEL;
+package com.example.model;
 
 import lombok.Setter;
 
 @Setter
-public class ProductBundle extends NotifiableProduct {
+public class ProductBundle extends Product implements ConsumerAmountInBundle {
     protected int amount;
 
-    @Override
-    public String generateAddressForNotification() {
-        throw new UnsupportedOperationException("Bundle can't be notified");
+    public ProductBundle() {
+        super(ProductType.PRODUCT_BUNDLE);
     }
+
 
     @Override
     public int getAmountInBundle() {
@@ -17,14 +17,14 @@ public class ProductBundle extends NotifiableProduct {
     }
 
     @Override
-    public String getBasicInfo() {
+    public String toString() {
         return "ProductBundle{" +
-                "channel='" + channel + '\'' +
-                ", id=" + id +
+                "id=" + id +
                 ", available=" + available +
                 ", title='" + title + '\'' +
                 ", price=" + price +
-                ", amountInBundle=" + amount +
+                ", channel='" + channel + '\'' +
+                ", amount=" + amount +
                 '}';
     }
 }

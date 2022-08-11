@@ -1,20 +1,17 @@
-package com.EXAMPLE.moDEL;
+package com.example.model;
 
 import lombok.Data;
 
 @Data
-public abstract class Product implements IProduct {
+public abstract class Product {
     protected long id;
     protected boolean available;
     protected String title;
     protected double price;
+    protected Channel channel;
+    protected ProductType productType;
 
-    public String getBasicInfo() {
-        return "Product{" +
-                "id=" + id +
-                ", available=" + available +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                '}';
+    protected Product(ProductType productType) {
+        this.productType = productType;
     }
 }
