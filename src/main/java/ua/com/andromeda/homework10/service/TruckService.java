@@ -23,21 +23,26 @@ public class TruckService extends VehicleService<Truck> {
 
     @Override
     public Truck createRandomVehicle() {
-        return new Truck("new Model",
-                            getRandomManufacturer(),
-                            BigDecimal.TEN,
-                            "body type",
-                            generateRandomListDetails(),
-                            RANDOM.nextInt(20000));
+        String model = "new Model_" + RANDOM.nextInt(10);
+        return new Truck.Builder()
+                .setModel(model)
+                .setManufacturer(getRandomManufacturer())
+                .setPrice(BigDecimal.valueOf(RANDOM.nextInt(10)))
+                .setBodyType("body type")
+                .setDetails(generateRandomListDetails())
+                .setMaxCarryingCapacity(RANDOM.nextInt(400))
+                .build();
     }
 
     @Override
     protected Truck createSimpleVehicle() {
-        return new Truck("new Model",
-                        Manufacturer.BMW,
-                        BigDecimal.TEN,
-                        "body type",
-                        simpleDetailsList,
-                        20000);
+        return new Truck.Builder()
+                .setModel("new Model")
+                .setManufacturer(Manufacturer.BMW)
+                .setPrice(BigDecimal.TEN)
+                .setBodyType("body type")
+                .setDetails(simpleDetailsList)
+                .setMaxCarryingCapacity(20000)
+                .build();
     }
 }

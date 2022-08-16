@@ -13,22 +13,14 @@ import java.util.Objects;
 public class Auto extends Vehicle {
     protected String bodyType;
     protected int count;
-    private Engine engine;
-    private String currency;
-    private LocalDateTime created;
+    protected Engine engine;
+    protected String currency;
+    protected LocalDateTime created;
 
-    public Auto(){
+    protected Auto() {
 
     }
-    public Auto(String model, Manufacturer manufacturer, BigDecimal price, String bodyType, List<String> details) {
-        super(model, manufacturer, price, details);
-        this.bodyType = bodyType;
-    }
 
-    public Auto(String model, Manufacturer manufacturer, BigDecimal price, List<String> details, String bodyType) {
-        super(model, manufacturer, price, details);
-        this.bodyType = bodyType;
-    }
 
     @Override
     public boolean equals(Object obj) {
@@ -54,6 +46,76 @@ public class Auto extends Vehicle {
         return Objects.hash(getModel(), getBodyType(), getManufacturer(), getPrice());
     }
 
+    public static class Builder {
+        private final Auto auto;
+
+        public Builder() {
+            auto = new Auto();
+        }
+
+        public Builder getBuilder() {
+            return new Builder();
+        }
+
+        public Builder setPrice(BigDecimal price) {
+            this.auto.price = price;
+            return this;
+        }
+
+        public Builder setManufacturer(Manufacturer manufacturer) {
+            this.auto.manufacturer = manufacturer;
+            return this;
+        }
+
+        public Builder setModel(String model) {
+            this.auto.model = model;
+            return this;
+        }
+
+        public Builder setDetails(List<String> details) {
+            this.auto.details = details;
+            return this;
+        }
+
+        public Builder setBodyType(String bodyType) {
+            bodyType = bodyType.trim();
+            if (bodyType.length() > 20 || bodyType.length() <= 0) {
+                throw new IllegalArgumentException("bodyType must be less 20 characters long");
+            }
+            this.auto.bodyType = bodyType;
+            return this;
+        }
+
+        public Builder setEngine(Engine engine) {
+            this.auto.engine = engine;
+            return this;
+        }
+
+        public Builder setCount(int count) {
+            if (count <= 0) {
+                throw new IllegalArgumentException("count must be greater than zero");
+            }
+            this.auto.count = count;
+            return this;
+        }
+
+
+        public Builder setCurrency(String currency) {
+            this.auto.currency = currency;
+            return this;
+        }
+
+        public Builder setCreated(LocalDateTime created) {
+            this.auto.created = created;
+            return this;
+        }
+
+        public Auto build() {
+            Objects.requireNonNull(auto.price);
+            return auto;
+        }
+    }
+
     @Override
     public String toString() {
         return "Auto{" +
@@ -64,7 +126,7 @@ public class Auto extends Vehicle {
                 ", details=" + details +
                 ", engine=" + engine +
                 ", count=" + count +
-                ", created=" + created+
+                ", created=" + created +
                 ", currency=" + currency +
                 ", manufacturer=" + manufacturer +
                 '}';

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,11 +13,82 @@ import java.util.Objects;
 public class Truck extends Auto {
     private int maxCarryingCapacity;
 
-    public Truck(String model, Manufacturer manufacturer,
-                 BigDecimal price, String bodyType, List<String> details, int maxCarryingCapacity) {
+    private Truck() {
 
-        super(model, manufacturer, price, bodyType, details);
-        this.maxCarryingCapacity = maxCarryingCapacity;
+    }
+
+    public static class Builder {
+        private final Truck truck;
+
+        public Builder() {
+            truck = new Truck();
+        }
+
+        public Truck.Builder getBuilder() {
+            return new Truck.Builder();
+        }
+
+        public Truck.Builder setPrice(BigDecimal price) {
+            this.truck.price = price;
+            return this;
+        }
+
+        public Truck.Builder setManufacturer(Manufacturer manufacturer) {
+            this.truck.manufacturer = manufacturer;
+            return this;
+        }
+
+        public Truck.Builder setModel(String model) {
+            this.truck.model = model;
+            return this;
+        }
+
+        public Truck.Builder setDetails(List<String> details) {
+            this.truck.details = details;
+            return this;
+        }
+
+        public Truck.Builder setMaxCarryingCapacity(int maxCarryingCapacity) {
+            this.truck.maxCarryingCapacity = maxCarryingCapacity;
+            return this;
+        }
+
+        public Truck.Builder setEngine(Engine engine) {
+            this.truck.engine = engine;
+            return this;
+        }
+
+        public Truck.Builder setCurrency(String currency) {
+            this.truck.currency = currency;
+            return this;
+        }
+
+        public Truck.Builder setCreated(LocalDateTime created) {
+            this.truck.created = created;
+            return this;
+        }
+
+        public Truck.Builder setBodyType(String bodyType) {
+            bodyType = bodyType.trim();
+            if (bodyType.length() > 20 || bodyType.length() <= 0) {
+                throw new IllegalArgumentException("bodyType must be less 20 characters long");
+            }
+            this.truck.bodyType = bodyType;
+            return this;
+        }
+
+        public Truck.Builder setCount(int count) {
+            if (count <= 0) {
+                throw new IllegalArgumentException("count must be greater than zero");
+            }
+            this.truck.count = count;
+            return this;
+        }
+
+        public Truck build() {
+            Objects.requireNonNull(truck.price);
+            return truck;
+        }
     }
 
     @Override
