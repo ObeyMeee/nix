@@ -13,7 +13,7 @@ public class Main {
     private static final BufferedReader CONSOLE_READER = new BufferedReader(new InputStreamReader(System.in));
     private static final ShopService SHOP_SERVICE = ShopService.getInstance();
 
-    public static void main(String[] args) throws IOException, IllegalAccessException {
+    public static void main(String[] args) throws IOException {
         System.out.print("Input limit of purchase ==> ");
         BigDecimal limit = new BigDecimal(CONSOLE_READER.readLine());
         for (int i = 0; i < 15; i++) {

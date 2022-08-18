@@ -16,21 +16,13 @@ import java.util.*;
 
 public class ShopService {
 
-    private static ShopService instance;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
-
     private static final PersonService PERSON_SERVICE = PersonService.getInstance();
     private static final Random RANDOM = new Random();
     private static final BufferedReader FILE_READER;
     private static final String[] FIELD_NAMES;
     private static final List<String> productsListAsString;
-
-    private List<Invoice> invoices;
-
-    private ShopService() {
-
-    }
+    private static ShopService instance;
 
     static {
         String fileName = "products.csv";
@@ -41,6 +33,12 @@ public class ShopService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Invoice> invoices;
+
+    private ShopService() {
+
     }
 
     private static BufferedReader getBufferedReader(String fileName) {
@@ -85,59 +83,38 @@ public class ShopService {
         return invoices;
     }
 
-    public Invoice createRandomInvoice(BigDecimal limit) throws IllegalAccessException {
-        Map<Product, Integer> products = generateProducts();
-
+    public Invoice createRandomInvoice(BigDecimal limit) {
         Invoice invoice = new Invoice();
+
+        Map<Product, Integer> products = generateProducts();
         invoice.setProducts(products);
         invoice.setCustomer(PERSON_SERVICE.getRandomCustomer());
         invoice.setType(getInvoiceType(products, limit));
         return invoice;
     }
 
-    private Map<Product, Integer> generateProducts() throws IllegalAccessException {
+    private Map<Product, Integer> generateProducts() {
         int[] productsIndexes = generateRandomProductsIndexes();
         Map<Product, Integer> products = new HashMap<>();
 
         for (int productsIndex : productsIndexes) {
             String productAsString = productsListAsString.get(productsIndex);
-            productAsString = checkOnValid(productsIndex, productAsString);
+            productAsString = checkOnValid(productAsString, productsIndex);
             String[] fieldValues = productAsString.split(",");
             String type = fieldValues[0];
+            Product product;
             switch (type) {
-                case "Television" -> {
-                    Television television = new Television();
-                    for (Field field : getAllFields(television.getClass())) {
-                        String fieldName = field.getName();
-                        for (int i = 0; i < FIELD_NAMES.length; i++) {
-                            if (fieldName.equals(FIELD_NAMES[i])) {
-                                setTelevisionFields(fieldValues, television, field, fieldName, i);
-                                break;
-                            }
-                        }
-                    }
-                    products.merge(television, 1, Integer::sum);
-                }
-                case "Telephone" -> {
-                    Telephone telephone = new Telephone();
-                    for (Field field : getAllFields(telephone.getClass())) {
-                        String fieldName = field.getName();
-                        for (int i = 0; i < FIELD_NAMES.length; i++) {
-                            if (fieldName.equals(FIELD_NAMES[i])) {
-                                setTelephoneFields(fieldValues, telephone, field, fieldName, i);
-                                break;
-                            }
-                        }
-                    }
-                    products.merge(telephone, 1, Integer::sum);
-                }
+                case "Television" -> product = new Television();
+                case "Telephone" -> product = new Telephone();
                 default -> throw new IllegalStateException("Unexpected value: " + type);
             }
+            setValues(fieldValues, product);
+            products.merge(product, 1, Integer::sum);
         }
         return products;
     }
 
-    private String checkOnValid(int productsIndex, String productAsString) {
+    private String checkOnValid(String productAsString, int productsIndex) {
         if (productAsString.matches(".+,,.+|^,.+|.+,$")) {
             try {
                 throw new LineFormatException("Line " + (productsIndex + 2) + " in table is incorrect");
@@ -150,6 +127,62 @@ public class ShopService {
         return productAsString;
     }
 
+    private void setValues(String[] fieldValues, Product product) {
+        List<Field> fields = getAllFields(product.getClass());
+        switch (product.getClass().getSimpleName()) {
+            case "Telephone" -> {
+                for (int i = 0; i < FIELD_NAMES.length; i++) {
+                    final int finalI = i;
+                    fields.stream()
+                            .filter(field -> field.getName().equals(FIELD_NAMES[finalI]))
+                            .forEach(field -> setTelephoneField(fieldValues, product, field, finalI));
+                }
+            }
+            case "Television" -> {
+                for (int i = 0; i < FIELD_NAMES.length; i++) {
+                    final int finalI = i;
+                    fields.stream()
+                            .filter(field -> field.getName().equals(FIELD_NAMES[finalI]))
+                            .forEach(field -> setTelevisionField(fieldValues, product, field, finalI));
+                }
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + product.getClass().getSimpleName());
+        }
+
+    }
+
+    private void setTelephoneField(String[] fieldValues, Product telephone, Field field, int i) {
+        String fieldName = field.getName();
+        field.setAccessible(true);
+        try {
+            if (fieldName.equals("price")) {
+                field.set(telephone, new BigDecimal(fieldValues[i]));
+            } else if (fieldName.equals("model")) {
+                field.set(telephone, new Model(fieldValues[i]));
+            } else {
+                field.set(telephone, fieldValues[i]);
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void setTelevisionField(String[] fieldValues, Product television, Field field, int i) {
+        String fieldName = field.getName();
+        field.setAccessible(true);
+        try {
+            if (fieldName.equals("diagonal")) {
+                field.set(television, Integer.parseInt(fieldValues[i]));
+            } else if (fieldName.equals("price")) {
+                field.set(television, new BigDecimal(fieldValues[i]));
+            } else {
+                field.set(television, fieldValues[i]);
+            }
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private int[] generateRandomProductsIndexes() {
         int amountProducts = RANDOM.nextInt(1, 6);
         int[] indexesDesiredProducts = new int[amountProducts];
@@ -157,28 +190,6 @@ public class ShopService {
             indexesDesiredProducts[i] = RANDOM.nextInt(productsListAsString.size());
         }
         return indexesDesiredProducts;
-    }
-
-    private void setTelephoneFields(String[] fieldValues, Telephone telephone, Field field, String fieldName, int i) throws IllegalAccessException {
-        field.setAccessible(true);
-        if (fieldName.equals("price")) {
-            field.set(telephone, new BigDecimal(fieldValues[i]));
-        } else if (fieldName.equals("model")) {
-            field.set(telephone, new Model(fieldValues[i]));
-        } else {
-            field.set(telephone, fieldValues[i]);
-        }
-    }
-
-    private void setTelevisionFields(String[] fieldValues, Television television, Field field, String fieldName, int i) throws IllegalAccessException {
-        field.setAccessible(true);
-        if (fieldName.equals("diagonal")) {
-            field.set(television, Integer.parseInt(fieldValues[i]));
-        } else if (fieldName.equals("price")) {
-            field.set(television, new BigDecimal(fieldValues[i]));
-        } else {
-            field.set(television, fieldValues[i]);
-        }
     }
 
     // https://www.baeldung.com/java-reflection-class-fields
@@ -190,6 +201,15 @@ public class ShopService {
         List<Field> result = new ArrayList<>(getAllFields(clazz.getSuperclass()));
         result.addAll(List.of(clazz.getDeclaredFields()));
         return result;
+    }
+
+    private InvoiceType getInvoiceType(Map<Product, Integer> products, BigDecimal limit) {
+        BigDecimal summaryPrice = calculateTotalPriceForInvoice(products);
+        if (summaryPrice.compareTo(limit) > 0) {
+            return InvoiceType.WHOLESALE;
+        }
+        return InvoiceType.RETAIL;
+
     }
 
     public BigDecimal calculateTotalPriceForInvoice(Map<Product, Integer> products) {
@@ -206,14 +226,6 @@ public class ShopService {
         return pricePerUnit.multiply(new BigDecimal(quantity));
     }
 
-    private InvoiceType getInvoiceType(Map<Product, Integer> products, BigDecimal limit) {
-        BigDecimal summaryPrice = calculateTotalPriceForInvoice(products);
-        if (summaryPrice.compareTo(limit) > 0) {
-            return InvoiceType.WHOLESALE;
-        }
-        return InvoiceType.RETAIL;
-
-    }
 
     public void saveInvoice(Invoice invoice) {
         if (invoices == null) {
