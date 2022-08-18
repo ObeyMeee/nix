@@ -4,6 +4,7 @@ import org.apache.commons.text.CaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ua.com.andromeda.module2.entity.*;
+import ua.com.andromeda.module2.exceptions.LineFormatException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -100,6 +101,7 @@ public class ShopService {
 
         for (int productsIndex : productsIndexes) {
             String productAsString = productsListAsString.get(productsIndex);
+            productAsString = checkOnValid(productsIndex, productAsString);
             String[] fieldValues = productAsString.split(",");
             String type = fieldValues[0];
             switch (type) {
@@ -135,11 +137,24 @@ public class ShopService {
         return products;
     }
 
+    private String checkOnValid(int productsIndex, String productAsString) {
+        if (productAsString.matches(".+,,.+|^,.+|.+,$")) {
+            try {
+                throw new LineFormatException("Line " + (productsIndex + 2) + " in table is incorrect");
+            } catch (LineFormatException e) {
+                LOGGER.error(e.getMessage());
+                System.err.println(e.getMessage());
+                productAsString = productsListAsString.get(0);
+            }
+        }
+        return productAsString;
+    }
+
     private int[] generateRandomProductsIndexes() {
         int amountProducts = RANDOM.nextInt(1, 6);
         int[] indexesDesiredProducts = new int[amountProducts];
         for (int i = 0; i < amountProducts; i++) {
-            indexesDesiredProducts[i] = RANDOM.nextInt(11);
+            indexesDesiredProducts[i] = RANDOM.nextInt(productsListAsString.size());
         }
         return indexesDesiredProducts;
     }
