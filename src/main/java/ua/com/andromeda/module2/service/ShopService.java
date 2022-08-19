@@ -1,76 +1,32 @@
 package ua.com.andromeda.module2.service;
 
-import org.apache.commons.text.CaseUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.com.andromeda.module2.FileReaderUtils;
 import ua.com.andromeda.module2.entity.*;
 import ua.com.andromeda.module2.exceptions.LineFormatException;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 
 public class ShopService {
+    private static ShopService instance;
+
+    private List<Invoice> invoices;
+    private final List<String> productsListAsString;
+    private final String[] fieldNames;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
     private static final PersonService PERSON_SERVICE = PersonService.getInstance();
-
     private static final Random RANDOM = new Random();
-    private static final BufferedReader FILE_READER;
-    private static final String[] FIELD_NAMES;
-    private static final List<String> productsListAsString;
-    private static ShopService instance;
-
-    static {
-        String fileName = "products.csv";
-        FILE_READER = getBufferedReader(fileName);
-        try {
-            FIELD_NAMES = getFieldNames();
-            productsListAsString = getProductsListAsString();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
     private final ProductFactory productFactory = new ProductFactory();
-    private List<Invoice> invoices;
+
 
     private ShopService() {
-
-    }
-
-    private static BufferedReader getBufferedReader(String fileName) {
-        InputStream inputStream = getInputStream(fileName);
-        assert inputStream != null;
-        return new BufferedReader(new InputStreamReader(inputStream));
-    }
-
-    private static InputStream getInputStream(String fileName) {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return classLoader.getResourceAsStream(fileName);
-    }
-
-    private static String[] getFieldNames() throws IOException {
-        String header = FILE_READER.readLine();
-        String[] properties = header.split(",");
-        for (int i = 0; i < properties.length; i++) {
-            properties[i] = CaseUtils.toCamelCase(properties[i], false, ' ');
-        }
-        return properties;
-    }
-
-    private static List<String> getProductsListAsString() throws IOException {
-        List<String> products = new ArrayList<>();
-        String line = FILE_READER.readLine();
-        while (line != null) {
-            products.add(line);
-            line = FILE_READER.readLine();
-        }
-        return products;
+        final FileReaderUtils fileReaderUtils = new FileReaderUtils();
+        fieldNames = fileReaderUtils.getFieldNames();
+        productsListAsString = fileReaderUtils.getProductsListAsString();
     }
 
 
@@ -128,18 +84,18 @@ public class ShopService {
         List<Field> fields = getAllFields(product.getClass());
         switch (product.getClass().getSimpleName()) {
             case "Telephone" -> {
-                for (int i = 0; i < FIELD_NAMES.length; i++) {
+                for (int i = 0; i < fieldNames.length; i++) {
                     final int finalI = i;
                     fields.stream()
-                            .filter(field -> field.getName().equals(FIELD_NAMES[finalI]))
+                            .filter(field -> field.getName().equals(fieldNames[finalI]))
                             .forEach(field -> setTelephoneField(fieldValues, product, field, finalI));
                 }
             }
             case "Television" -> {
-                for (int i = 0; i < FIELD_NAMES.length; i++) {
+                for (int i = 0; i < fieldNames.length; i++) {
                     final int finalI = i;
                     fields.stream()
-                            .filter(field -> field.getName().equals(FIELD_NAMES[finalI]))
+                            .filter(field -> field.getName().equals(fieldNames[finalI]))
                             .forEach(field -> setTelevisionField(fieldValues, product, field, finalI));
                 }
             }
@@ -201,26 +157,13 @@ public class ShopService {
     }
 
     private InvoiceType getInvoiceType(Map<Product, Integer> products, BigDecimal limit) {
-        BigDecimal summaryPrice = calculateTotalPriceForInvoice(products);
+        ShopStatistics shopStatistics = new ShopStatistics(invoices);
+        BigDecimal summaryPrice = shopStatistics.calculateTotalPriceForInvoice(products);
         if (summaryPrice.compareTo(limit) > 0) {
             return InvoiceType.WHOLESALE;
         }
         return InvoiceType.RETAIL;
 
-    }
-
-    public BigDecimal calculateTotalPriceForInvoice(Map<Product, Integer> products) {
-        return products.entrySet()
-                .stream()
-                .map(this::calculateTotalPricePerProduct)
-                .reduce(BigDecimal::add)
-                .orElseThrow();
-    }
-
-    private BigDecimal calculateTotalPricePerProduct(Map.Entry<Product, Integer> productIntegerEntry) {
-        BigDecimal pricePerUnit = productIntegerEntry.getKey().getPrice();
-        int quantity = productIntegerEntry.getValue();
-        return pricePerUnit.multiply(new BigDecimal(quantity));
     }
 
 
@@ -232,66 +175,6 @@ public class ShopService {
         invoices.add(invoice);
     }
 
-    public int getAmountSoldTelephones() {
-        return invoices.stream()
-                .flatMap(invoice -> invoice.getProducts().entrySet().stream())
-                .filter(productIntegerEntry -> productIntegerEntry.getKey() instanceof Telephone)
-                .mapToInt(Map.Entry::getValue)
-                .sum();
-    }
-
-    public int getAmountSoldTelevisions() {
-        return invoices.stream()
-                .flatMap(invoice -> invoice.getProducts().entrySet().stream())
-                .filter(productIntegerEntry -> productIntegerEntry.getKey() instanceof Television)
-                .mapToInt(Map.Entry::getValue)
-                .sum();
-    }
-
-    public Invoice getInvoiceBySmallestTotalPrice() {
-        return invoices.stream()
-                .min((invoice1, invoice2) -> {
-                    BigDecimal totalPriceForInvoice1 = calculateTotalPriceForInvoice(invoice1.getProducts());
-                    BigDecimal totalPriceForInvoice2 = calculateTotalPriceForInvoice(invoice2.getProducts());
-                    return totalPriceForInvoice1.compareTo(totalPriceForInvoice2);
-                })
-                .orElseThrow();
-    }
-
-    public BigDecimal getTotalPriceForAllPurchases() {
-        return invoices.stream()
-                .flatMap(invoice -> invoice.getProducts().entrySet().stream())
-                .map(this::calculateTotalPricePerProduct)
-                .reduce(BigDecimal::add)
-                .orElse(BigDecimal.ZERO);
-    }
-
-    public long getAmountInvoicesWhereTypeEqualsRetail() {
-        return invoices.stream()
-                .filter(invoice -> invoice.getType().equals(InvoiceType.RETAIL))
-                .count();
-    }
-
-    public List<Invoice> getInvoicesContainsOneProductType() {
-        return invoices.stream()
-                .filter(invoice -> {
-                    Set<Product> products = invoice.getProducts().keySet();
-                    boolean isAllProductsTelephones = products.stream().allMatch(Telephone.class::isInstance);
-                    boolean isAllProductsTelevisions = products.stream().allMatch(Television.class::isInstance);
-                    return isAllProductsTelephones || isAllProductsTelevisions;
-                }).toList();
-    }
-
-    public List<Invoice> getFirstInvoices(int count) {
-        return invoices.subList(0, count);
-    }
-
-    public List<Invoice> getInvoicesWhereCustomerIsUnderage() {
-        return invoices.stream()
-                .filter(invoice -> invoice.getCustomer().getAge() < 18)
-                .peek(invoice -> invoice.setType(InvoiceType.LOW_AGE))
-                .toList();
-    }
 
     public void sort() {
         Comparator<Invoice> comparatorByCustomerAgeDesc = Comparator.comparingInt(o -> o.getCustomer().getAge());
@@ -301,8 +184,9 @@ public class ShopService {
                 .mapToInt(Integer::intValue)
                 .sum());
 
-        Comparator<Invoice> comparatorByTotalPrice = (o1, o2) -> calculateTotalPriceForInvoice(o1.getProducts())
-                .compareTo(calculateTotalPriceForInvoice(o2.getProducts()));
+        final ShopStatistics shopStatistics = new ShopStatistics(invoices);
+        Comparator<Invoice> comparatorByTotalPrice =
+                Comparator.comparing(o -> shopStatistics.calculateTotalPriceForInvoice(o.getProducts()));
 
         Comparator<Invoice> generalComparator = comparatorByCustomerAgeDesc
                 .thenComparing(comparatorByTotalQuantity)
