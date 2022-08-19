@@ -13,9 +13,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public abstract class VehicleService<T extends Vehicle> {
+    protected static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
+    protected static final Random RANDOM = new Random();
     protected final Predicate<T> vehicleHasPrice = vehicle -> !vehicle.getPrice().equals(BigDecimal.ZERO);
     protected final Predicate<List<T>> listHasPrice = vehicles -> vehicles.stream().allMatch(vehicleHasPrice);
-
     protected final Function<Map<String, Object>, T> function = map -> {
         T vehicle = createSimpleVehicle();
 
@@ -30,8 +31,6 @@ public abstract class VehicleService<T extends Vehicle> {
         vehicle.setDetails(details);
         return vehicle;
     };
-    protected static final Logger LOGGER = LoggerFactory.getLogger(VehicleService.class);
-    protected static final Random RANDOM = new Random();
     protected final List<String> simpleDetailsList = List.of("details1", "details2", "details3");
 
     private final CrudRepository<T> repository;

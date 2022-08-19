@@ -7,7 +7,7 @@ import java.io.InputStreamReader;
 
 public class ResourceReader {
 
-    private ResourceReader(){
+    private ResourceReader() {
 
     }
 

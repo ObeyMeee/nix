@@ -21,7 +21,7 @@ public class Main {
             Invoice invoice = SHOP_SERVICE.createRandomInvoice(limit);
             SHOP_SERVICE.saveInvoice(invoice);
         }
-        final ShopStatistics shopStatistics = new ShopStatistics(SHOP_SERVICE.getInvoices());
+        final ShopStatistics shopStatistics = new ShopStatistics(SHOP_SERVICE);
         System.out.println("Sold telephones ==> " + shopStatistics.getAmountSoldTelephones());
         System.out.println("Sold televisions ==> " + shopStatistics.getAmountSoldTelevisions());
 

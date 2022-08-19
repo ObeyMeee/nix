@@ -1,4 +1,4 @@
-package ua.com.andromeda.module2;
+package ua.com.andromeda.module2.utils;
 
 import org.apache.commons.text.CaseUtils;
 
@@ -11,6 +11,17 @@ import java.util.List;
 
 public class FileReaderUtils {
 
+
+    private static BufferedReader getBufferedReader() {
+        InputStream inputStream = getInputStream();
+        assert inputStream != null;
+        return new BufferedReader(new InputStreamReader(inputStream));
+    }
+
+    private static InputStream getInputStream() {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        return classLoader.getResourceAsStream("products.csv");
+    }
 
     public String[] getFieldNames() {
         BufferedReader reader = getBufferedReader();
@@ -25,17 +36,6 @@ public class FileReaderUtils {
             properties[i] = CaseUtils.toCamelCase(properties[i], false, ' ');
         }
         return properties;
-    }
-
-    private static BufferedReader getBufferedReader() {
-        InputStream inputStream = getInputStream();
-        assert inputStream != null;
-        return new BufferedReader(new InputStreamReader(inputStream));
-    }
-
-    private static InputStream getInputStream() {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        return classLoader.getResourceAsStream("products.csv");
     }
 
     public List<String> getProductsListAsString() {

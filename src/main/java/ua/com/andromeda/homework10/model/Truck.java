@@ -17,6 +17,33 @@ public class Truck extends Auto {
 
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Truck truck)) return false;
+        return Objects.equals(model, truck.model)
+                && Objects.equals(price, truck.price)
+                && manufacturer == truck.manufacturer
+                && Objects.equals(bodyType, truck.bodyType)
+                && Objects.equals(maxCarryingCapacity, truck.maxCarryingCapacity);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(model, price, manufacturer, bodyType, maxCarryingCapacity);
+    }
+
+    @Override
+    public String toString() {
+        return "Truck{" +
+                "id='" + id + '\'' +
+                ", maxCarryingCapacity=" + maxCarryingCapacity +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", manufacturer=" + manufacturer +
+                '}';
+    }
+
     public static class Builder {
         private final Truck truck;
 
@@ -89,32 +116,5 @@ public class Truck extends Auto {
             Objects.requireNonNull(truck.price);
             return truck;
         }
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Truck truck)) return false;
-        return Objects.equals(model, truck.model)
-                && Objects.equals(price, truck.price)
-                && manufacturer == truck.manufacturer
-                && Objects.equals(bodyType, truck.bodyType)
-                && Objects.equals(maxCarryingCapacity, truck.maxCarryingCapacity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(model, price, manufacturer, bodyType, maxCarryingCapacity);
-    }
-
-    @Override
-    public String toString() {
-        return "Truck{" +
-                "id='" + id + '\'' +
-                ", maxCarryingCapacity=" + maxCarryingCapacity +
-                ", model='" + model + '\'' +
-                ", price=" + price +
-                ", manufacturer=" + manufacturer +
-                '}';
     }
 }

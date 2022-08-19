@@ -19,8 +19,14 @@ public class SportCarRepositoryTest {
 
     @Before
     public void setUp() {
-        target = new SportCarRepository();
-        sportCar = new SportCar("Model", Manufacturer.BMW, BigDecimal.TEN, "BodyType", 300);
+        target = SportCarRepository.getInstance();
+        sportCar = new SportCar.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("Model")
+                .setMaxSpeed(300)
+                .build();
     }
 
     @Test
@@ -94,7 +100,13 @@ public class SportCarRepositoryTest {
         target.save(sportCar);
         sportCar.setModel("updated model");
         target.update(sportCar);
-        SportCar updatedAuto = new SportCar("updated model", Manufacturer.BMW, BigDecimal.TEN, "BodyType", 300);
+        SportCar updatedAuto = new SportCar.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("updated model")
+                .setMaxSpeed(300)
+                .build();
         Assertions.assertEquals(updatedAuto.getModel(), sportCar.getModel());
     }
 

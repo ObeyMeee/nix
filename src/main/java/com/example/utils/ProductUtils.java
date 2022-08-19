@@ -8,9 +8,8 @@ import java.util.List;
 import java.util.Random;
 
 public class ProductUtils {
-    protected final ProductRepository repository = new ProductRepository();
-
     protected static final Random RANDOM = new Random();
+    protected final ProductRepository repository = new ProductRepository();
 
     public List<Product> generateRandomProductList() {
         List<Product> products = new ArrayList<>();

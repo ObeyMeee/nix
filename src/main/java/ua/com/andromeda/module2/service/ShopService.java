@@ -2,28 +2,27 @@ package ua.com.andromeda.module2.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ua.com.andromeda.module2.FileReaderUtils;
 import ua.com.andromeda.module2.entity.*;
 import ua.com.andromeda.module2.exceptions.LineFormatException;
+import ua.com.andromeda.module2.utils.FileReaderUtils;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 
 public class ShopService {
-    private static ShopService instance;
-
-    private List<Invoice> invoices;
-    private final List<String> productsListAsString;
-    private final String[] fieldNames;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
     private static final PersonService PERSON_SERVICE = PersonService.getInstance();
     private static final Random RANDOM = new Random();
+    private static ShopService instance;
+    private final List<Invoice> invoices;
+    private final List<String> productsListAsString;
+    private final String[] fieldNames;
     private final ProductFactory productFactory = new ProductFactory();
 
 
     private ShopService() {
+        invoices = new LinkedList<>();
         final FileReaderUtils fileReaderUtils = new FileReaderUtils();
         fieldNames = fileReaderUtils.getFieldNames();
         productsListAsString = fileReaderUtils.getProductsListAsString();
@@ -157,7 +156,7 @@ public class ShopService {
     }
 
     private InvoiceType getInvoiceType(Map<Product, Integer> products, BigDecimal limit) {
-        ShopStatistics shopStatistics = new ShopStatistics(invoices);
+        ShopStatistics shopStatistics = new ShopStatistics(this);
         BigDecimal summaryPrice = shopStatistics.calculateTotalPriceForInvoice(products);
         if (summaryPrice.compareTo(limit) > 0) {
             return InvoiceType.WHOLESALE;
@@ -168,9 +167,6 @@ public class ShopService {
 
 
     public void saveInvoice(Invoice invoice) {
-        if (invoices == null) {
-            invoices = new LinkedList<>();
-        }
         LOGGER.info("[{}] [{}] [{}]", invoice.getCustomer(), invoice.getProducts(), invoice.getType());
         invoices.add(invoice);
     }
@@ -184,7 +180,7 @@ public class ShopService {
                 .mapToInt(Integer::intValue)
                 .sum());
 
-        final ShopStatistics shopStatistics = new ShopStatistics(invoices);
+        final ShopStatistics shopStatistics = new ShopStatistics(this);
         Comparator<Invoice> comparatorByTotalPrice =
                 Comparator.comparing(o -> shopStatistics.calculateTotalPriceForInvoice(o.getProducts()));
 

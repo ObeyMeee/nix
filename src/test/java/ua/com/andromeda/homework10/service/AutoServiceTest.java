@@ -33,8 +33,12 @@ public class AutoServiceTest {
     }
 
     private Auto createSimpleAuto() {
-        return new Auto("new Model", Manufacturer.BMW, BigDecimal.TEN,
-                "body type");
+        return new Auto.Builder()
+                .setBodyType("body type")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("new Model")
+                .build();
     }
 
 
@@ -151,7 +155,7 @@ public class AutoServiceTest {
     @Test
     public void orElse_fail() {
         Auto founded = target.orElse("");
-        Auto expected = new Auto("new Model", Manufacturer.BMW, BigDecimal.TEN, "body type");
+        Auto expected = createSimpleAuto();
         assertEquals(expected, founded);
     }
 
@@ -195,8 +199,7 @@ public class AutoServiceTest {
     @Test
     public void or_fail() {
         Optional<Auto> optionalAuto = target.or("");
-        Optional<Auto> expected = Optional.of(new Auto("new Model", Manufacturer.BMW,
-                BigDecimal.TEN, "body type"));
+        Optional<Auto> expected = Optional.of(createSimpleAuto());
         assertEquals(expected, optionalAuto);
     }
 }
