@@ -18,6 +18,7 @@ public class ShopService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
     private static final PersonService PERSON_SERVICE = PersonService.getInstance();
+
     private static final Random RANDOM = new Random();
     private static final BufferedReader FILE_READER;
     private static final String[] FIELD_NAMES;
@@ -35,6 +36,7 @@ public class ShopService {
         }
     }
 
+    private final ProductFactory productFactory = new ProductFactory();
     private List<Invoice> invoices;
 
     private ShopService() {
@@ -102,12 +104,7 @@ public class ShopService {
             productAsString = checkOnValid(productAsString, productsIndex);
             String[] fieldValues = productAsString.split(",");
             String type = fieldValues[0];
-            Product product;
-            switch (type) {
-                case "Television" -> product = new Television();
-                case "Telephone" -> product = new Telephone();
-                default -> throw new IllegalStateException("Unexpected value: " + type);
-            }
+            Product product = productFactory.createProduct(ProductType.valueOf(type.toUpperCase()));
             setValues(fieldValues, product);
             products.merge(product, 1, Integer::sum);
         }
