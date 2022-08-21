@@ -20,7 +20,12 @@ public class AutoRepositoryTest {
     @Before
     public void setUp() {
         target = AutoRepository.getInstance();
-        auto = new Auto("Model", Manufacturer.BMW, BigDecimal.TEN, "BodyType");
+        auto = new Auto.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("Model")
+                .build();
     }
 
     @Test
@@ -94,7 +99,12 @@ public class AutoRepositoryTest {
         target.save(auto);
         auto.setModel("updated model");
         target.update(auto);
-        Auto updatedAuto = new Auto("updated model", Manufacturer.BMW, BigDecimal.TEN, "BodyType");
+        Auto updatedAuto = new Auto.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("updated model")
+                .build();
         Assertions.assertEquals(updatedAuto.getModel(), auto.getModel());
     }
 

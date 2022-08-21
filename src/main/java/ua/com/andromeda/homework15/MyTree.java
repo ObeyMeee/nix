@@ -5,22 +5,12 @@ import ua.com.andromeda.homework10.model.Vehicle;
 import java.math.BigDecimal;
 import java.util.Comparator;
 
-public class MyTree <T extends Vehicle>{
-    private static class Node<T>{
-        Node<T> left;
-        Node<T> right;
-        T data;
-
-        Node(T data){
-            this.data = data;
-        }
-    }
-
-    private Node<T> root;
+public class MyTree<T extends Vehicle> {
     private final Comparator<T> comparator;
+    private Node<T> root;
     private int size;
 
-    public MyTree(Comparator<T> comparator){
+    public MyTree(Comparator<T> comparator) {
         this.comparator = comparator;
     }
 
@@ -90,5 +80,15 @@ public class MyTree <T extends Vehicle>{
 
     public int size() {
         return size;
+    }
+
+    private static class Node<T> {
+        Node<T> left;
+        Node<T> right;
+        T data;
+
+        Node(T data) {
+            this.data = data;
+        }
     }
 }

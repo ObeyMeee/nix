@@ -19,8 +19,14 @@ public class TruckRepositoryTest {
 
     @Before
     public void setUp() {
-        target = new TruckRepository();
-        truck = new Truck("Model", Manufacturer.BMW, BigDecimal.TEN, "BodyType", 2000);
+        target = TruckRepository.getInstance();
+        truck = new Truck.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("Model")
+                .setMaxCarryingCapacity(2000)
+                .build();
     }
 
     @Test
@@ -94,7 +100,13 @@ public class TruckRepositoryTest {
         target.save(truck);
         truck.setModel("updated model");
         target.update(truck);
-        Truck updatedAuto = new Truck("updated model", Manufacturer.BMW, BigDecimal.TEN, "BodyType", 300);
+        Truck updatedAuto = new Truck.Builder()
+                .setBodyType("BodyType")
+                .setPrice(BigDecimal.TEN)
+                .setManufacturer(Manufacturer.BMW)
+                .setModel("updated model")
+                .setMaxCarryingCapacity(300)
+                .build();
         Assertions.assertEquals(updatedAuto.getModel(), truck.getModel());
     }
 

@@ -46,6 +46,22 @@ public class Auto extends Vehicle {
         return Objects.hash(getModel(), getBodyType(), getManufacturer(), getPrice());
     }
 
+    @Override
+    public String toString() {
+        return "Auto{" +
+                "bodyType='" + bodyType + '\'' +
+                ", id='" + id + '\'' +
+                ", model='" + model + '\'' +
+                ", price=" + price +
+                ", details=" + details +
+                ", engine=" + engine +
+                ", count=" + count +
+                ", created=" + created +
+                ", currency=" + currency +
+                ", manufacturer=" + manufacturer +
+                '}';
+    }
+
     public static class Builder {
         private final Auto auto;
 
@@ -114,21 +130,5 @@ public class Auto extends Vehicle {
             Objects.requireNonNull(auto.price);
             return auto;
         }
-    }
-
-    @Override
-    public String toString() {
-        return "Auto{" +
-                "bodyType='" + bodyType + '\'' +
-                ", id='" + id + '\'' +
-                ", model='" + model + '\'' +
-                ", price=" + price +
-                ", details=" + details +
-                ", engine=" + engine +
-                ", count=" + count +
-                ", created=" + created +
-                ", currency=" + currency +
-                ", manufacturer=" + manufacturer +
-                '}';
     }
 }

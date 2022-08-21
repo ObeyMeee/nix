@@ -11,7 +11,7 @@
         </encoder>
     </appender>
 
-    <property name="HOME_LOG" value="logs/log.txt"/>
+    <property name="HOME_LOG" value="logs/invoices.txt"/>
     <appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${HOME_LOG}</file>
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
@@ -22,12 +22,11 @@
         </rollingPolicy>
 
         <encoder>
-            <pattern>%d %p %c{1.} [%t] %m%n</pattern>
+            <pattern>%d %m%n</pattern>
         </encoder>
     </appender>
 
     <root level="DEBUG">
         <appender-ref ref="FILE-ROLLING"/>
-        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
