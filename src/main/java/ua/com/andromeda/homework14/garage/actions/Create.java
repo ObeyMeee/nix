@@ -13,7 +13,7 @@ public class Create implements Command {
     private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = context.get(VehicleGarageService.class);
 
     @Override
-    public void execute()  {
+    public void execute() {
         Vehicle vehicleToBeCreated = UserInputUtils.getVehicle();
         boolean isVehicleAdded = VEHICLE_GARAGE_SERVICE.add(vehicleToBeCreated);
         if (isVehicleAdded) {
