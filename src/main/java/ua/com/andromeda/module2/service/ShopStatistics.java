@@ -1,5 +1,7 @@
 package ua.com.andromeda.module2.service;
 
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Singleton;
 import ua.com.andromeda.module2.entity.*;
 
 import java.math.BigDecimal;
@@ -7,9 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+@Singleton
 public class ShopStatistics {
     private final ShopService shopService;
 
+    @Autowired
     public ShopStatistics(ShopService shopService) {
         this.shopService = shopService;
     }

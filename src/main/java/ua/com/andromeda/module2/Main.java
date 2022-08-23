@@ -1,5 +1,6 @@
 package ua.com.andromeda.module2;
 
+import ua.com.andromeda.homework19.ApplicationContext;
 import ua.com.andromeda.module2.entity.Invoice;
 import ua.com.andromeda.module2.service.ShopService;
 import ua.com.andromeda.module2.service.ShopStatistics;
@@ -12,16 +13,19 @@ import java.util.List;
 
 public class Main {
     private static final BufferedReader CONSOLE_READER = new BufferedReader(new InputStreamReader(System.in));
-    private static final ShopService SHOP_SERVICE = ShopService.getInstance();
 
     public static void main(String[] args) throws IOException {
+        ApplicationContext context = ApplicationContext.getInstance();
+        ShopService shopService = context.get(ShopService.class);
+
         System.out.print("Input limit of purchase ==> ");
         BigDecimal limit = new BigDecimal(CONSOLE_READER.readLine());
         for (int i = 0; i < 15; i++) {
-            Invoice invoice = SHOP_SERVICE.createRandomInvoice(limit);
-            SHOP_SERVICE.saveInvoice(invoice);
+            Invoice invoice = shopService.createRandomInvoice(limit);
+            shopService.saveInvoice(invoice);
         }
-        final ShopStatistics shopStatistics = new ShopStatistics(SHOP_SERVICE);
+        final ShopStatistics shopStatistics = context.get(ShopStatistics.class);
+
         System.out.println("Sold telephones ==> " + shopStatistics.getAmountSoldTelephones());
         System.out.println("Sold televisions ==> " + shopStatistics.getAmountSoldTelevisions());
 
@@ -44,8 +48,8 @@ public class Main {
         shopStatistics.getInvoicesWhereCustomerIsUnderage().forEach(System.out::println);
 
         System.out.println("\n\nSorted all invoices:\n");
-        SHOP_SERVICE.sort();
-        List<Invoice> sortedInvoices = SHOP_SERVICE.getInvoices();
+        shopService.sort();
+        List<Invoice> sortedInvoices = shopService.getInvoices();
         sortedInvoices.forEach(System.out::println);
     }
 }

@@ -3,6 +3,7 @@ package ua.com.andromeda.homework16;
 import ua.com.andromeda.homework10.model.Auto;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.service.AutoService;
+import ua.com.andromeda.homework19.ApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Main {
-    private static final AutoService AUTO_SERVICE = AutoService.getInstance();
+    private static final AutoService AUTO_SERVICE = ApplicationContext.getInstance().get(AutoService.class);
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
 
