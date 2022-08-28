@@ -1,19 +1,20 @@
 package ua.com.andromeda.homework14.garage.actions;
 
-import ua.com.andromeda.homework10.model.Vehicle;
-import ua.com.andromeda.homework10.service.VehicleGarageService;
+import ua.com.andromeda.homework10.model.Truck;
+import ua.com.andromeda.homework10.service.TruckService;
+import ua.com.andromeda.homework10.service.VehicleService;
 import ua.com.andromeda.homework14.garage.utils.UserInputUtils;
 
 import java.util.Optional;
 
 public class Find implements Command {
-    private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = VehicleGarageService.getInstance();
+    private static final VehicleService<Truck> VEHICLE_SERVICE = TruckService.getInstance();
 
     @Override
     public void execute() {
-        int index = UserInputUtils.getInt("Input index of desired vehicle ==> ");
-        Optional<Vehicle> foundedVehicle = VEHICLE_GARAGE_SERVICE.findByIndex(index);
+        String id = UserInputUtils.getString("Input id of desired vehicle ==> ");
+        Optional<Truck> foundedVehicle = VEHICLE_SERVICE.findById(id);
         foundedVehicle.ifPresentOrElse(vehicle -> System.out.println("vehicle = " + vehicle),
-                () -> System.out.println("Couldn't find vehicle by index = " + index));
+                () -> System.out.println("Couldn't find vehicle by id = " + id));
     }
 }

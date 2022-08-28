@@ -1,11 +1,14 @@
 package ua.com.andromeda.homework10.service;
 
+import ua.com.andromeda.homework10.model.Engine;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.model.Truck;
 import ua.com.andromeda.homework10.repository.CrudRepository;
 import ua.com.andromeda.homework10.repository.TruckRepository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 public class TruckService extends VehicleService<Truck> {
     private static TruckService instance;
@@ -23,14 +26,22 @@ public class TruckService extends VehicleService<Truck> {
 
     @Override
     public Truck createRandomVehicle() {
-        String model = "new Model_" + RANDOM.nextInt(10);
+        Engine engine = new Engine();
+        engine.setId(UUID.randomUUID().toString());
+        engine.setBrand("brand_" + RANDOM.nextInt(500));
+        engine.setVolume(RANDOM.nextInt(3000));
         return new Truck.Builder()
-                .setModel(model)
+                .setId(UUID.randomUUID().toString())
+                .setModel("new Model_" + RANDOM.nextInt(300))
+                .setEngine(engine)
+                .setCount(RANDOM.nextInt(1, 10))
+                .setCurrency("$")
+                .setCreated(LocalDateTime.now())
+                .setPrice(BigDecimal.valueOf(RANDOM.nextDouble(500)))
                 .setManufacturer(getRandomManufacturer())
-                .setPrice(BigDecimal.valueOf(RANDOM.nextInt(10)))
                 .setBodyType("body type")
                 .setDetails(generateRandomListDetails())
-                .setMaxCarryingCapacity(RANDOM.nextInt(400))
+                .setMaxCarryingCapacity(RANDOM.nextInt(30000))
                 .build();
     }
 

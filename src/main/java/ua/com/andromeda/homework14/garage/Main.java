@@ -14,7 +14,7 @@ public class Main {
             Action[] actions = Action.values();
 
             List<String> actionDescriptions = Arrays.stream(actions)
-                    .map(action -> action.getActionDescription())
+                    .map(Action::getActionDescription)
                     .toList();
 
             int userInput = UserInputUtils.selectGivenActions(actions.length, actionDescriptions);

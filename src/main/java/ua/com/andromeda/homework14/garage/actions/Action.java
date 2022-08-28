@@ -5,15 +5,13 @@ import lombok.Getter;
 
 @Getter
 public enum Action {
-    CREATE("Create vehicle", new Create()),
-    INSERT("Insert vehicle into indicated position", new Insert()),
-    FIND("Find by index", new Find()),
-    DELETE("Delete by index", new Delete()),
+    CREATE_DB_TABLES("Create database tables", new CreateDbTables()),
+    SAVE("Save random vehicle", new Save()),
+    SAVE_ALL("Save 10 random vehicles", new SaveAll()),
+    FIND("Find by id", new Find()),
+    DELETE("Delete by id", new Delete()),
     PRINT("Print all", new Print()),
     UPDATE("Update auto", new Update()),
-    GET_CREATED_DATE("Get date of creation vehicle", new GetCreatedDate()),
-    GET_UPDATED_DATE("Get date of update vehicle", new GetUpdatedDate()),
-    GET_RESTYLING_AMOUNT("Get restyling amount", new GetRestylingAmount()),
     EXIT("Exit", null);
 
     private final String actionDescription;

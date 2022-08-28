@@ -78,6 +78,11 @@ public class Auto extends Vehicle {
             return this;
         }
 
+        public Builder setId(String id) {
+            this.auto.id = id;
+            return this;
+        }
+
         public Builder setManufacturer(Manufacturer manufacturer) {
             this.auto.manufacturer = manufacturer;
             return this;
@@ -123,6 +128,11 @@ public class Auto extends Vehicle {
 
         public Builder setCreated(LocalDateTime created) {
             this.auto.created = created;
+            return this;
+        }
+
+        public Builder setInvoiceId(String invoiceId) {
+            this.auto.invoiceId = invoiceId;
             return this;
         }
 

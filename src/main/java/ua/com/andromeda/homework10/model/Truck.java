@@ -17,6 +17,19 @@ public class Truck extends Auto {
 
     }
 
+    public Truck(Auto auto) {
+        this.id = auto.getId();
+        this.bodyType = auto.getBodyType();
+        this.count = auto.getCount();
+        this.engine = auto.getEngine();
+        this.currency = auto.getCurrency();
+        this.created = LocalDateTime.now();
+        this.model = auto.getModel();
+        this.price = auto.getPrice();
+        this.manufacturer = auto.getManufacturer();
+        this.details = auto.getDetails();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -38,9 +51,15 @@ public class Truck extends Auto {
         return "Truck{" +
                 "id='" + id + '\'' +
                 ", maxCarryingCapacity=" + maxCarryingCapacity +
+                ", bodyType='" + bodyType + '\'' +
+                ", count=" + count +
+                ", engine=" + engine +
+                ", currency='" + currency + '\'' +
+                ", created=" + created +
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", details=" + details +
                 '}';
     }
 
@@ -109,6 +128,11 @@ public class Truck extends Auto {
                 throw new IllegalArgumentException("count must be greater than zero");
             }
             this.truck.count = count;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.truck.id = id;
             return this;
         }
 

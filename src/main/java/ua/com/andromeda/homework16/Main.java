@@ -19,7 +19,7 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException, IOException {
         System.out.println("Creating autos...");
-        AUTO_SERVICE.createAndSaveVehicles(10);
+        AUTO_SERVICE.createVehicles(10);
         Thread.sleep(300);
         AUTO_SERVICE.printAll();
 

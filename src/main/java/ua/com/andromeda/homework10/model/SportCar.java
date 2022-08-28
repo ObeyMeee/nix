@@ -17,6 +17,19 @@ public class SportCar extends Auto {
 
     }
 
+    public SportCar(Auto auto) {
+        this.id = auto.getId();
+        this.bodyType = auto.getBodyType();
+        this.count = auto.getCount();
+        this.engine = auto.getEngine();
+        this.currency = auto.getCurrency();
+        this.created = LocalDateTime.now();
+        this.model = auto.getModel();
+        this.price = auto.getPrice();
+        this.manufacturer = auto.getManufacturer();
+        this.details = auto.getDetails();
+    }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) {
@@ -43,11 +56,17 @@ public class SportCar extends Auto {
     @Override
     public String toString() {
         return "SportCar{" +
-                "id='" + id + '\'' +
-                ", maxSpeed=" + maxSpeed +
+                "maxSpeed=" + maxSpeed +
+                ", bodyType='" + bodyType + '\'' +
+                ", count=" + count +
+                ", engine=" + engine +
+                ", currency='" + currency + '\'' +
+                ", created=" + created +
+                ", id='" + id + '\'' +
                 ", model='" + model + '\'' +
                 ", price=" + price +
                 ", manufacturer=" + manufacturer +
+                ", details=" + details +
                 '}';
     }
 
@@ -116,6 +135,11 @@ public class SportCar extends Auto {
                 throw new IllegalArgumentException("count must be greater than zero");
             }
             this.sportCar.count = count;
+            return this;
+        }
+
+        public Builder setId(String id) {
+            this.sportCar.id = id;
             return this;
         }
 

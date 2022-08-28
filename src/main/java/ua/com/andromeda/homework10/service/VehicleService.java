@@ -45,7 +45,7 @@ public abstract class VehicleService<T extends Vehicle> {
     }
 
 
-    public List<T> createAndSaveVehicles(int count) {
+    public List<T> createVehicles(int count) {
         if (count < 0) {
             throw new IllegalArgumentException("count can't be less than 0");
         }
@@ -54,7 +54,6 @@ public abstract class VehicleService<T extends Vehicle> {
         for (int i = 0; i < count; i++) {
             final T vehicle = createRandomVehicle();
             result.add(vehicle);
-            repository.save(vehicle);
             LOGGER.debug("Created auto {}", vehicle.getId());
         }
         return result;
@@ -96,7 +95,11 @@ public abstract class VehicleService<T extends Vehicle> {
         if (vehicle.getPrice().equals(BigDecimal.ZERO)) {
             vehicle.setPrice(BigDecimal.valueOf(-1));
         }
-        return repository.save(vehicle);
+        boolean isSaved = repository.save(vehicle);
+        if (isSaved) {
+            LOGGER.info("Saved auto ==> {}", vehicle);
+        }
+        return isSaved;
     }
 
     public void saveAll(List<T> vehicles) {
@@ -106,12 +109,16 @@ public abstract class VehicleService<T extends Vehicle> {
         repository.saveAll(vehicles);
     }
 
-    public void update(T vehicle) {
-        repository.update(vehicle);
+    public void update(T vehicle, String id) {
+        repository.update(vehicle, id);
     }
 
     public boolean delete(String id) {
-        return repository.delete(id);
+        boolean isDeleted = repository.delete(id);
+        if (isDeleted) {
+            LOGGER.info("Auto with id == '{}' has been successfully deleted", id);
+        }
+        return isDeleted;
     }
 
 
@@ -136,7 +143,7 @@ public abstract class VehicleService<T extends Vehicle> {
     }
 
     public void ifPresentUpdateAutoOrElseSave(T auto) {
-        repository.update(auto);
+        repository.update(auto, auto.getId());
     }
 
 

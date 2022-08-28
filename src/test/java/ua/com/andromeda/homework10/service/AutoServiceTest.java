@@ -47,21 +47,21 @@ public class AutoServiceTest {
         String message = "count can't be less than 0";
         assertThrows(message,
                 IllegalArgumentException.class,
-                () -> target.createAndSaveVehicles(-1)
+                () -> target.createVehicles(-1)
         );
     }
 
     @Test
     public void createAndSaveVehicles_zeroCount() {
         List<Auto> expected = Collections.EMPTY_LIST;
-        List<Auto> actual = target.createAndSaveVehicles(0);
+        List<Auto> actual = target.createVehicles(0);
         assertEquals(expected, actual);
     }
 
 
     @Test
     public void createAndSaveVehicles_countOne() {
-        List<Auto> actual = target.createAndSaveVehicles(1);
+        List<Auto> actual = target.createVehicles(1);
         assertEquals(1, actual.size());
         Mockito.verify(autoRepository, Mockito.times(1)).save(Mockito.any());
     }
@@ -69,7 +69,7 @@ public class AutoServiceTest {
 
     @Test
     public void createAndSaveVehicles_CountFive() {
-        List<Auto> actual = target.createAndSaveVehicles(5);
+        List<Auto> actual = target.createVehicles(5);
         assertEquals(5, actual.size());
         Mockito.verify(autoRepository, Mockito.times(5)).save(Mockito.any());
     }

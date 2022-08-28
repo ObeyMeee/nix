@@ -1,5 +1,6 @@
 package ua.com.andromeda.homework14.garage.utils;
 
+import lombok.SneakyThrows;
 import ua.com.andromeda.homework10.model.Vehicle;
 import ua.com.andromeda.homework10.model.VehicleType;
 import ua.com.andromeda.homework10.service.AutoService;
@@ -7,7 +8,6 @@ import ua.com.andromeda.homework10.service.SportCarService;
 import ua.com.andromeda.homework10.service.TruckService;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
@@ -23,20 +23,23 @@ public class UserInputUtils {
 
     }
 
+    @SneakyThrows
     public static int getInt(String outputClue) {
         System.out.print(outputClue);
-        try {
-            return Integer.parseInt(READER.readLine());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return Integer.parseInt(READER.readLine());
+    }
+
+    @SneakyThrows
+    public static String getString(String outputClue) {
+        System.out.print(outputClue);
+        return READER.readLine();
     }
 
     public static Vehicle getVehicle() {
         VehicleType[] vehicleTypes = VehicleType.values();
 
         List<String> vehicleTypesAsStrings = Arrays.stream(vehicleTypes)
-                .map(vehicleType -> vehicleType.toString())
+                .map(Enum::toString)
                 .toList();
 
         int userInput = selectGivenActions(vehicleTypes.length, vehicleTypesAsStrings);
