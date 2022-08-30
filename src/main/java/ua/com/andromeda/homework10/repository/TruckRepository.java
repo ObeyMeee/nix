@@ -1,27 +1,21 @@
 package ua.com.andromeda.homework10.repository;
 
 import ua.com.andromeda.homework10.model.Truck;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class TruckRepository implements CrudRepository<Truck> {
-    private static TruckRepository instance;
-
     private final List<Truck> trucks;
 
-    private TruckRepository() {
+    public TruckRepository() {
         trucks = new LinkedList<>();
     }
 
-    public static TruckRepository getInstance() {
-        if (instance == null) {
-            instance = new TruckRepository();
-        }
-        return instance;
-    }
 
     @Override
     public Optional<Truck> findById(String id) {

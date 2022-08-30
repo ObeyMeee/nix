@@ -9,7 +9,7 @@ import ua.com.andromeda.homework14.garage.utils.UserInputUtils;
 
 public class Insert implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(Insert.class);
-    private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = VehicleGarageService.getInstance();
+    private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = context.get(VehicleGarageService.class);
 
 
     @Override

@@ -4,7 +4,7 @@ import ua.com.andromeda.homework10.service.VehicleGarageService;
 import ua.com.andromeda.homework14.garage.utils.UserInputUtils;
 
 public class GetUpdatedDate implements Command {
-    private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = VehicleGarageService.getInstance();
+    private static final VehicleGarageService VEHICLE_GARAGE_SERVICE = context.get(VehicleGarageService.class);
 
     @Override
     public void execute() {

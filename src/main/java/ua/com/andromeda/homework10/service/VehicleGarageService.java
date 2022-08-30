@@ -3,25 +3,22 @@ package ua.com.andromeda.homework10.service;
 import ua.com.andromeda.homework10.model.Vehicle;
 import ua.com.andromeda.homework10.repository.VehicleGarageRepository;
 import ua.com.andromeda.homework14.garage.Garage;
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.util.Date;
 import java.util.Optional;
 
+@Singleton
 public class VehicleGarageService {
 
-    private static VehicleGarageService instance;
     private final VehicleGarageRepository repository;
 
-    private VehicleGarageService(VehicleGarageRepository repository) {
+    @Autowired
+    public VehicleGarageService(VehicleGarageRepository repository) {
         this.repository = repository;
     }
 
-    public static VehicleGarageService getInstance() {
-        if (instance == null) {
-            instance = new VehicleGarageService(VehicleGarageRepository.getInstance());
-        }
-        return instance;
-    }
 
     public Optional<Vehicle> findByIndex(int index) {
         return repository.findByIndex(index);

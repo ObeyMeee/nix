@@ -1,26 +1,21 @@
 package ua.com.andromeda.homework10.repository;
 
 import ua.com.andromeda.homework10.model.SportCar;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class SportCarRepository implements CrudRepository<SportCar> {
-    private static SportCarRepository instance;
     private final List<SportCar> sportCars;
 
-    private SportCarRepository() {
+    public SportCarRepository() {
         sportCars = new LinkedList<>();
     }
 
-    public static SportCarRepository getInstance() {
-        if (instance == null) {
-            instance = new SportCarRepository();
-        }
-        return instance;
-    }
 
     @Override
     public Optional<SportCar> findById(String id) {

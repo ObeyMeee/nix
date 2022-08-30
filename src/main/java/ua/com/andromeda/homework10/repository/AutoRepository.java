@@ -1,25 +1,19 @@
 package ua.com.andromeda.homework10.repository;
 
 import ua.com.andromeda.homework10.model.Auto;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
+@Singleton
 public class AutoRepository implements CrudRepository<Auto> {
-    private static AutoRepository instance;
     private final List<Auto> autos;
 
-    private AutoRepository() {
+    public AutoRepository() {
         autos = new LinkedList<>();
-    }
-
-    public static AutoRepository getInstance() {
-        if (instance == null) {
-            instance = new AutoRepository();
-        }
-        return instance;
     }
 
     @Override

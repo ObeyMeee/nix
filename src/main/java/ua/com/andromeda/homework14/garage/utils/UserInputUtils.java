@@ -5,6 +5,7 @@ import ua.com.andromeda.homework10.model.VehicleType;
 import ua.com.andromeda.homework10.service.AutoService;
 import ua.com.andromeda.homework10.service.SportCarService;
 import ua.com.andromeda.homework10.service.TruckService;
+import ua.com.andromeda.homework19.ApplicationContext;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,9 +16,6 @@ import java.util.List;
 public class UserInputUtils {
     private static final BufferedReader READER = new BufferedReader(new InputStreamReader(System.in));
 
-    private static final AutoService AUTO_SERVICE = AutoService.getInstance();
-    private static final SportCarService SPORT_CAR_SERVICE = SportCarService.getInstance();
-    private static final TruckService TRUCK_SERVICE = TruckService.getInstance();
 
     private UserInputUtils() {
 
@@ -36,14 +34,18 @@ public class UserInputUtils {
         VehicleType[] vehicleTypes = VehicleType.values();
 
         List<String> vehicleTypesAsStrings = Arrays.stream(vehicleTypes)
-                .map(vehicleType -> vehicleType.toString())
+                .map(Enum::toString)
                 .toList();
 
         int userInput = selectGivenActions(vehicleTypes.length, vehicleTypesAsStrings);
+        ApplicationContext context = ApplicationContext.getInstance();
+        AutoService autoService = context.get(AutoService.class);
+        SportCarService sportCarService = context.get(SportCarService.class);
+        TruckService truckService = context.get(TruckService.class);
         return switch (vehicleTypes[userInput]) {
-            case AUTO -> AUTO_SERVICE.createRandomVehicle();
-            case SPORT_CAR -> SPORT_CAR_SERVICE.createRandomVehicle();
-            case TRUCK -> TRUCK_SERVICE.createRandomVehicle();
+            case AUTO -> autoService.createRandomVehicle();
+            case SPORT_CAR -> sportCarService.createRandomVehicle();
+            case TRUCK -> truckService.createRandomVehicle();
         };
     }
 

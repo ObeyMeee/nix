@@ -2,24 +2,18 @@ package ua.com.andromeda.homework10.repository;
 
 import ua.com.andromeda.homework10.model.Vehicle;
 import ua.com.andromeda.homework14.garage.Garage;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.util.Date;
 import java.util.Optional;
 
+@Singleton
 public class VehicleGarageRepository implements GarageRepository<Vehicle> {
-    private static VehicleGarageRepository instance;
 
     private final Garage<Vehicle> vehicles;
 
-    private VehicleGarageRepository() {
+    public VehicleGarageRepository() {
         vehicles = new Garage<>();
-    }
-
-    public static VehicleGarageRepository getInstance() {
-        if (instance == null) {
-            instance = new VehicleGarageRepository();
-        }
-        return instance;
     }
 
     @Override

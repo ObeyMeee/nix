@@ -2,6 +2,9 @@ package ua.com.andromeda.module2.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ua.com.andromeda.homework19.ApplicationContext;
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Singleton;
 import ua.com.andromeda.module2.entity.*;
 import ua.com.andromeda.module2.exceptions.LineFormatException;
 import ua.com.andromeda.module2.utils.FileReaderUtils;
@@ -10,30 +13,26 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Singleton
 public class ShopService {
     private static final Logger LOGGER = LoggerFactory.getLogger(ShopService.class);
-    private static final PersonService PERSON_SERVICE = PersonService.getInstance();
     private static final Random RANDOM = new Random();
-    private static ShopService instance;
+    private final PersonService personService;
     private final List<Invoice> invoices;
     private final List<String> productsListAsString;
     private final String[] fieldNames;
     private final ProductFactory productFactory = new ProductFactory();
 
 
-    private ShopService() {
+    @Autowired
+    public ShopService(PersonService personService) {
+        this.personService = personService;
+
         invoices = new LinkedList<>();
+
         final FileReaderUtils fileReaderUtils = new FileReaderUtils();
         fieldNames = fileReaderUtils.getFieldNames();
         productsListAsString = fileReaderUtils.getProductsListAsString();
-    }
-
-
-    public static ShopService getInstance() {
-        if (instance == null) {
-            instance = new ShopService();
-        }
-        return instance;
     }
 
     public List<Invoice> getInvoices() {
@@ -45,7 +44,7 @@ public class ShopService {
 
         Map<Product, Integer> products = generateProducts();
         invoice.setProducts(products);
-        invoice.setCustomer(PERSON_SERVICE.getRandomCustomer());
+        invoice.setCustomer(personService.getRandomCustomer());
         invoice.setType(getInvoiceType(products, limit));
         return invoice;
     }
@@ -156,7 +155,7 @@ public class ShopService {
     }
 
     private InvoiceType getInvoiceType(Map<Product, Integer> products, BigDecimal limit) {
-        ShopStatistics shopStatistics = new ShopStatistics(this);
+        ShopStatistics shopStatistics = ApplicationContext.getInstance().get(ShopStatistics.class);
         BigDecimal summaryPrice = shopStatistics.calculateTotalPriceForInvoice(products);
         if (summaryPrice.compareTo(limit) > 0) {
             return InvoiceType.WHOLESALE;
@@ -180,7 +179,7 @@ public class ShopService {
                 .mapToInt(Integer::intValue)
                 .sum());
 
-        final ShopStatistics shopStatistics = new ShopStatistics(this);
+        ShopStatistics shopStatistics = ApplicationContext.getInstance().get(ShopStatistics.class);
         Comparator<Invoice> comparatorByTotalPrice =
                 Comparator.comparing(o -> shopStatistics.calculateTotalPriceForInvoice(o.getProducts()));
 

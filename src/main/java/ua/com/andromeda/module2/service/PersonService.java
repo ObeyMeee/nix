@@ -1,24 +1,19 @@
 package ua.com.andromeda.module2.service;
 
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Singleton;
 import ua.com.andromeda.module2.entity.Customer;
 
 import java.util.Random;
 
+@Singleton
 public class PersonService {
-    private static PersonService instance;
 
     private final Random random;
 
-
-    private PersonService() {
+    @Autowired
+    public PersonService() {
         random = new Random();
-    }
-
-    public static PersonService getInstance() {
-        if (instance == null) {
-            instance = new PersonService();
-        }
-        return instance;
     }
 
     public Customer getRandomCustomer() {

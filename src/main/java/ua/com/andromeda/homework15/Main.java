@@ -2,6 +2,7 @@ package ua.com.andromeda.homework15;
 
 import ua.com.andromeda.homework10.model.SportCar;
 import ua.com.andromeda.homework10.service.SportCarService;
+import ua.com.andromeda.homework19.ApplicationContext;
 
 import java.util.Comparator;
 
@@ -13,7 +14,7 @@ public class Main {
                 .thenComparing(SportCar::getMaxSpeed);
 
         MyTree<SportCar> tree = new MyTree<>(comparator);
-        SportCarService sportCarService = SportCarService.getInstance();
+        SportCarService sportCarService = ApplicationContext.getInstance().get(SportCarService.class);
         for (int i = 0; i < 10; i++) {
             tree.add(sportCarService.createRandomVehicle());
         }
