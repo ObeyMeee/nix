@@ -6,9 +6,10 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.ArgumentMatcher;
 import org.mockito.Mockito;
 import ua.com.andromeda.homework10.StringMatchers;
-import ua.com.andromeda.homework10.model.Auto;
-import ua.com.andromeda.homework10.model.Manufacturer;
-import ua.com.andromeda.homework10.repository.AutoRepository;
+import ua.com.andromeda.model.Manufacturer;
+import ua.com.andromeda.model.cars.Auto;
+import ua.com.andromeda.repository.jdbc.AutoRepository;
+import ua.com.andromeda.service.AutoService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;

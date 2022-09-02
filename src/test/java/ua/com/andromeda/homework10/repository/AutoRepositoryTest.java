@@ -3,8 +3,9 @@ package ua.com.andromeda.homework10.repository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
-import ua.com.andromeda.homework10.model.Auto;
-import ua.com.andromeda.homework10.model.Manufacturer;
+import ua.com.andromeda.model.Manufacturer;
+import ua.com.andromeda.model.cars.Auto;
+import ua.com.andromeda.repository.jdbc.AutoRepository;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
