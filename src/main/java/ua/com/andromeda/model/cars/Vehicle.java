@@ -1,5 +1,6 @@
 package ua.com.andromeda.model.cars;
 
+import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 public abstract class Vehicle {
     @Id
-    @Column
+    @SerializedName("_id")
     @GeneratedValue(generator = "system-uuid")
     @GenericGenerator(name = "system-uuid", strategy = "uuid")
     protected String id;
@@ -39,5 +40,5 @@ public abstract class Vehicle {
     protected Invoice invoice;
 
     @OneToMany(mappedBy = "vehicle", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    protected List<Detail> details;
+    protected transient List<Detail> details;
 }

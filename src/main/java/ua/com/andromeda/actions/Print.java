@@ -6,7 +6,8 @@ import ua.com.andromeda.service.AutoService;
 import ua.com.andromeda.service.VehicleService;
 
 public class Print implements Command {
-    private static final VehicleService<Auto> VEHICLE_SERVICE = ApplicationContext.getInstance().get(AutoService.class);
+    private static final VehicleService<Auto> VEHICLE_SERVICE =
+            ApplicationContext.getInstance().get(AutoService.class);
 
     @Override
     public void execute() {

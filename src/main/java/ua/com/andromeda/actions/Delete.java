@@ -10,7 +10,8 @@ import ua.com.andromeda.utils.UserInputUtils;
 
 public class Delete implements Command {
     private static final Logger LOGGER = LoggerFactory.getLogger(Delete.class);
-    private static final VehicleService<Auto> VEHICLE_SERVICE = ApplicationContext.getInstance().get(AutoService.class);
+    private static final VehicleService<Auto> VEHICLE_SERVICE =
+            ApplicationContext.getInstance().get(AutoService.class);
 
     @Override
     public void execute() {
