@@ -8,8 +8,8 @@ import org.hibernate.type.IntegerType;
 import ua.com.andromeda.annotations.Autowired;
 import ua.com.andromeda.annotations.Singleton;
 import ua.com.andromeda.config.HibernateConfig;
-import ua.com.andromeda.dto.InvoiceDTO;
 import ua.com.andromeda.model.Invoice;
+import ua.com.andromeda.model.dto.InvoiceDTO;
 import ua.com.andromeda.repository.InvoiceRepository;
 
 import javax.transaction.Transactional;
@@ -45,11 +45,11 @@ public class InvoiceRepositoryHibernateImpl implements InvoiceRepository {
         return totalPricePerInvoice.entrySet()
                 .stream()
                 .filter(entry -> entry.getValue().compareTo(totalPrice) > 0)
-                .map(entry -> getInvoiceById(entry.getKey()))
+                .map(entry -> getById(entry.getKey()))
                 .toList();
     }
 
-    private Invoice getInvoiceById(String id) {
+    public Invoice getById(String id) {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
         Invoice invoice = session.get(Invoice.class, id);

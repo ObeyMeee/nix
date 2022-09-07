@@ -9,7 +9,8 @@ import ua.com.andromeda.utils.UserInputUtils;
 import java.util.Optional;
 
 public class Find implements Command {
-    private static final VehicleService<Auto> VEHICLE_SERVICE = ApplicationContext.getInstance().get(AutoService.class);
+    private static final VehicleService<Auto> VEHICLE_SERVICE =
+            ApplicationContext.getInstance().get(AutoService.class);
 
     @Override
     public void execute() {

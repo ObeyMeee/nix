@@ -10,7 +10,8 @@ import ua.com.andromeda.service.AutoService;
 public class Save implements Command {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Save.class);
-    private static final AutoService AUTO_SERVICE = ApplicationContext.getInstance().get(AutoService.class);
+    private static final AutoService AUTO_SERVICE =
+            ApplicationContext.getInstance().get(AutoService.class);
 
     @Override
     public void execute() {
