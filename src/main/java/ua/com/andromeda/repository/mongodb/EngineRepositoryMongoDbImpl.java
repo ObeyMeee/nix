@@ -14,8 +14,8 @@ import java.util.Optional;
 
 @Singleton
 public class EngineRepositoryMongoDbImpl {
-    private final MongoDatabase database;
     private static final String COLLECTION_NAME = "engines";
+    private final MongoDatabase database;
 
     @Autowired
     public EngineRepositoryMongoDbImpl(MongoDbConfig mongoDbConfig) {

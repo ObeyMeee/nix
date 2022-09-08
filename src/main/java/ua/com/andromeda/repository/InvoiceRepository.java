@@ -12,7 +12,10 @@ public interface InvoiceRepository {
     Invoice getById(String id);
 
     List<Invoice> getInvoicesWhereTotalPriceGreaterThan(BigDecimal totalPrice);
+
     int getInvoicesCount();
+
     void updateTime(String id);
+
     Map<String, BigDecimal> groupByTotalPrice();
 }

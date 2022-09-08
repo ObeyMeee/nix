@@ -4,7 +4,6 @@ import com.google.gson.annotations.SerializedName;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.GenericGenerator;
 import ua.com.andromeda.model.Detail;
 import ua.com.andromeda.model.Invoice;
 import ua.com.andromeda.model.Manufacturer;
@@ -20,8 +19,6 @@ import java.util.List;
 public abstract class Vehicle {
     @Id
     @SerializedName("_id")
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     protected String id;
 
     @Column

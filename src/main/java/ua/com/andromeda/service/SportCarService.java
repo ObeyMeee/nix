@@ -7,7 +7,7 @@ import ua.com.andromeda.model.Engine;
 import ua.com.andromeda.model.Manufacturer;
 import ua.com.andromeda.model.cars.SportCar;
 import ua.com.andromeda.repository.CrudRepository;
-import ua.com.andromeda.repository.mongodb.SportCarRepositoryMongoDbImpl;
+import ua.com.andromeda.repository.hibernate.HibernateSportCarRepository;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class SportCarService extends VehicleService<SportCar> {
 
     @Autowired
-    public SportCarService(@Qualifier(SportCarRepositoryMongoDbImpl.class) CrudRepository<SportCar> repository) {
+    public SportCarService(@Qualifier(HibernateSportCarRepository.class) CrudRepository<SportCar> repository) {
         super(repository);
     }
 

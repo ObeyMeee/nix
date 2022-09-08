@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import ua.com.andromeda.model.cars.Vehicle;
 
 import javax.persistence.*;
@@ -22,8 +21,6 @@ import java.util.UUID;
 public class Invoice {
     @Id
     @Column
-    @GeneratedValue(generator = "system-uuid")
-    @GenericGenerator(name = "system-uuid", strategy = "uuid")
     @SerializedName("_id")
     private String id;
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)

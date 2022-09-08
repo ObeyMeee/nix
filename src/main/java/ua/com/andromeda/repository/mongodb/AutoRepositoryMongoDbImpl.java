@@ -19,8 +19,8 @@ import java.util.Optional;
 @Singleton
 public class AutoRepositoryMongoDbImpl implements CrudRepository<Auto> {
     private static final ApplicationContext CONTEXT = ApplicationContext.getInstance();
-    private final MongoCollection<Document> autos;
     private static final String COLLECTION_NAME = "autos";
+    private final MongoCollection<Document> autos;
 
     @Autowired
     public AutoRepositoryMongoDbImpl(MongoDbConfig mongoDbConfig) {

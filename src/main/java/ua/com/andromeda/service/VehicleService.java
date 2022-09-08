@@ -207,13 +207,13 @@ public abstract class VehicleService<T extends Vehicle> {
                 .distinct()
                 .sorted(Comparator.comparing(Vehicle::getModel))
                 .collect(Collectors.toMap(Vehicle::getId,
-                                          Vehicle::getModel,
-                                         (vehicle, duplicatedVehicle) -> duplicatedVehicle,
+                        Vehicle::getModel,
+                        (vehicle, duplicatedVehicle) -> duplicatedVehicle,
                         LinkedHashMap::new))
                 .forEach((key, value) -> System.out.printf("%s ==> %s%n", key, value));
     }
 
-    public boolean hasDetail(String detail){
+    public boolean hasDetail(String detail) {
         List<T> vehicles = repository.getAll();
 
         return vehicles.stream()
@@ -221,6 +221,7 @@ public abstract class VehicleService<T extends Vehicle> {
                 .anyMatch(details -> details.equals(detail));
 
     }
+
     public void printVehiclePriceStatistics() {
         List<T> vehicles = repository.getAll();
         DoubleSummaryStatistics priceSummaryStatistics = vehicles.stream()
@@ -232,13 +233,14 @@ public abstract class VehicleService<T extends Vehicle> {
 
     public void testAllVehiclesHasPrice() {
         List<T> vehicles = getAll();
-        if (listHasPrice.test(vehicles)){
+        if (listHasPrice.test(vehicles)) {
             System.out.println("All autos has price");
-        }else {
+        } else {
             System.out.println("some autos without price are founded");
         }
     }
-    public T getVehicleFromMap(Map<String, Object> map){
+
+    public T getVehicleFromMap(Map<String, Object> map) {
         return function.apply(map);
     }
 }

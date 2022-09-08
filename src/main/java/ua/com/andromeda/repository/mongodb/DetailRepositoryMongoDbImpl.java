@@ -16,8 +16,8 @@ import java.util.Optional;
 
 @Singleton
 public class DetailRepositoryMongoDbImpl {
-    private final MongoDatabase database;
     private static final String COLLECTION_NAME = "details";
+    private final MongoDatabase database;
 
     @Autowired
     public DetailRepositoryMongoDbImpl(MongoDbConfig mongoDbConfig) {

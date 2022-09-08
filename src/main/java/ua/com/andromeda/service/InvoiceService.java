@@ -8,7 +8,8 @@ import ua.com.andromeda.model.cars.Auto;
 import ua.com.andromeda.model.cars.SportCar;
 import ua.com.andromeda.model.cars.Truck;
 import ua.com.andromeda.model.cars.Vehicle;
-import ua.com.andromeda.repository.mongodb.InvoiceRepositoryMongoDbImpl;
+import ua.com.andromeda.repository.InvoiceRepository;
+import ua.com.andromeda.repository.hibernate.InvoiceRepositoryHibernateImpl;
 
 import java.math.BigDecimal;
 import java.util.LinkedList;
@@ -19,13 +20,13 @@ import java.util.Random;
 @Singleton
 public class InvoiceService {
     private static final Random RANDOM = new Random();
-    private final InvoiceRepositoryMongoDbImpl invoiceRepository;
+    private final InvoiceRepository invoiceRepository;
     private final AutoService autoService;
     private final SportCarService sportCarService;
     private final TruckService truckService;
 
     @Autowired
-    public InvoiceService(@Qualifier(InvoiceRepositoryMongoDbImpl.class) InvoiceRepositoryMongoDbImpl invoiceRepository,
+    public InvoiceService(@Qualifier(InvoiceRepositoryHibernateImpl.class) InvoiceRepository invoiceRepository,
                           AutoService autoService,
                           SportCarService sportCarService,
                           TruckService truckService) {
@@ -89,7 +90,7 @@ public class InvoiceService {
         invoiceRepository.updateTime(id);
     }
 
-    public Map<BigDecimal, Integer> groupByTotalPrice() {
+    public Map<String, BigDecimal> groupByTotalPrice() {
         return invoiceRepository.groupByTotalPrice();
     }
 }

@@ -7,7 +7,7 @@ import ua.com.andromeda.model.Engine;
 import ua.com.andromeda.model.Manufacturer;
 import ua.com.andromeda.model.cars.Auto;
 import ua.com.andromeda.repository.CrudRepository;
-import ua.com.andromeda.repository.mongodb.AutoRepositoryMongoDbImpl;
+import ua.com.andromeda.repository.hibernate.HibernateAutoRepository;
 
 import java.math.BigDecimal;
 
@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class AutoService extends VehicleService<Auto> {
 
     @Autowired
-    public AutoService(@Qualifier(AutoRepositoryMongoDbImpl.class) CrudRepository<Auto> repository) {
+    public AutoService(@Qualifier(HibernateAutoRepository.class) CrudRepository<Auto> repository) {
         super(repository);
     }
 

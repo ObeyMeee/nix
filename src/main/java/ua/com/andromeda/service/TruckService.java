@@ -6,14 +6,14 @@ import ua.com.andromeda.model.Engine;
 import ua.com.andromeda.model.Manufacturer;
 import ua.com.andromeda.model.cars.Truck;
 import ua.com.andromeda.repository.CrudRepository;
-import ua.com.andromeda.repository.mongodb.TruckRepositoryMongoDbImpl;
+import ua.com.andromeda.repository.hibernate.HibernateTruckRepository;
 
 import java.math.BigDecimal;
 
 @Singleton
 public class TruckService extends VehicleService<Truck> {
 
-    public TruckService(@Qualifier(TruckRepositoryMongoDbImpl.class) CrudRepository<Truck> repository) {
+    public TruckService(@Qualifier(HibernateTruckRepository.class) CrudRepository<Truck> repository) {
         super(repository);
     }
 

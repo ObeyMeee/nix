@@ -36,7 +36,7 @@ public class HibernateAutoRepository implements CrudRepository<Auto> {
     public List<Auto> getAll() {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
-        List<Auto> autos = session.createQuery("from Auto ", Auto.class).list();
+        List<Auto> autos = session.createQuery("from Auto ").list();
         transaction.commit();
         session.close();
         return autos;
@@ -47,7 +47,6 @@ public class HibernateAutoRepository implements CrudRepository<Auto> {
         Session session = sessionFactory.getCurrentSession();
         Transaction transaction = session.beginTransaction();
         session.persist(vehicle);
-        System.out.println("vehicle = " + vehicle);
         transaction.commit();
         session.close();
         return true;
