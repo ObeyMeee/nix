@@ -10,9 +10,11 @@
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL95Dialect"/>
             <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/test_hibernate"/>
-            <property name="javax.persistence.jdbc.user" value="postgres"/>
-            <property name="javax.persistence.jdbc.password" value="1337"/>
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:postgresql://ec2-18-208-55-135.compute-1.amazonaws.com/dfn7rh7jm4g1v9"/>
+            <property name="javax.persistence.jdbc.user" value="beuphqsiyszphy"/>
+            <property name="javax.persistence.jdbc.password"
+                      value="b40be8cd73627658411c1e726abaef3a140f0e97bf043463d9d88baff83dbfac"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>
