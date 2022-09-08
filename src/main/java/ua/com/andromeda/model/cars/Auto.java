@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -32,6 +33,10 @@ public class Auto extends Vehicle {
     @CreationTimestamp
     protected LocalDateTime created;
 
+    public Auto() {
+        super.id = UUID.randomUUID().toString();
+        created = LocalDateTime.now();
+    }
 
     @Override
     public boolean equals(Object obj) {

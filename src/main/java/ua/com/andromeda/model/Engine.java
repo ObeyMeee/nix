@@ -1,18 +1,21 @@
 package ua.com.andromeda.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.util.UUID;
 
 @Entity
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 @AllArgsConstructor
 public class Engine {
     @Id
@@ -24,4 +27,8 @@ public class Engine {
     private String brand;
     @Column
     private int volume;
+
+    public Engine() {
+        id = UUID.randomUUID().toString();
+    }
 }

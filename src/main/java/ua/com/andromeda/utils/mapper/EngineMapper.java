@@ -1,5 +1,6 @@
 package ua.com.andromeda.utils.mapper;
 
+import org.bson.Document;
 import ua.com.andromeda.model.Engine;
 
 import java.sql.PreparedStatement;
@@ -7,7 +8,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class EngineMapper {
-
 
     private EngineMapper() {
 
@@ -21,7 +21,6 @@ public class EngineMapper {
         return engine;
     }
 
-
     public static void mapEngineToRow(PreparedStatement preparedStatement, Engine engine) throws SQLException {
         int parameterIndex = 1;
         preparedStatement.setString(parameterIndex++, engine.getId());
@@ -29,4 +28,19 @@ public class EngineMapper {
         preparedStatement.setInt(parameterIndex, engine.getVolume());
     }
 
+
+    public static Document mapEngineToDocument(Engine engine) {
+        Document document = new Document();
+        document.append("id", engine.getId());
+        document.append("volume", engine.getVolume());
+        document.append("brand", engine.getBrand());
+        return document;
+    }
+
+    public static Engine mapDocumentToEngine(Document document) {
+        String id = document.getString("id");
+        int volume = document.getInteger("volume");
+        String brand = document.getString("brand");
+        return new Engine(id, brand, volume);
+    }
 }

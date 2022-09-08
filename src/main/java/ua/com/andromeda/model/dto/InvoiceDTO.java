@@ -1,4 +1,4 @@
-package ua.com.andromeda.dto;
+package ua.com.andromeda.model.dto;
 
 import lombok.Data;
 

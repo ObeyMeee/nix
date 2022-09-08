@@ -58,6 +58,7 @@ public abstract class VehicleService<T extends Vehicle> {
         List<T> result = new LinkedList<>();
         for (int i = 0; i < count; i++) {
             final T vehicle = createRandomVehicle();
+            vehicle.getDetails().forEach(detail -> detail.setVehicle(vehicle));
             result.add(vehicle);
             LOGGER.debug("Created auto {}", vehicle.getId());
         }
