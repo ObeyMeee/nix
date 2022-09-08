@@ -1,6 +1,7 @@
 package ua.com.andromeda.config;
 
 import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoDatabase;
 import lombok.Getter;
 import ua.com.andromeda.annotations.Singleton;
@@ -11,7 +12,8 @@ public class MongoDbConfig {
     private final MongoClient mongoClient;
 
     public MongoDbConfig() {
-        mongoClient = new MongoClient("localhost", 27017);
+        String dbURI = "mongodb+srv://Andromeda:Andromeda@cluster0.y4tuetf.mongodb.net/?retryWrites=true&w=majority";
+        mongoClient = new MongoClient(new MongoClientURI(dbURI));
     }
 
     public MongoDatabase getMongoDatabase(String databaseName) {
