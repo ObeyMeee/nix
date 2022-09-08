@@ -5,24 +5,21 @@ import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.model.SportCar;
 import ua.com.andromeda.homework10.repository.CrudRepository;
 import ua.com.andromeda.homework10.repository.SportCarRepository;
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Qualifier;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Singleton
 public class SportCarService extends VehicleService<SportCar> {
-    private static SportCarService instance;
-
-    private SportCarService(CrudRepository<SportCar> repository) {
+    @Autowired
+    public SportCarService(@Qualifier(SportCarRepository.class) CrudRepository<SportCar> repository) {
         super(repository);
     }
 
-    public static SportCarService getInstance() {
-        if (instance == null) {
-            instance = new SportCarService(SportCarRepository.getInstance());
-        }
-        return instance;
-    }
 
     @Override
     public SportCar createRandomVehicle() {

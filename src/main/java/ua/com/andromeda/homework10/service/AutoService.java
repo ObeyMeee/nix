@@ -5,25 +5,22 @@ import ua.com.andromeda.homework10.model.Engine;
 import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.repository.AutoRepository;
 import ua.com.andromeda.homework10.repository.CrudRepository;
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Qualifier;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Singleton
 public class AutoService extends VehicleService<Auto> {
 
-    private static AutoService instance;
-
-    private AutoService(CrudRepository<Auto> repository) {
+    @Autowired
+    public AutoService(@Qualifier(AutoRepository.class) CrudRepository<Auto> repository) {
         super(repository);
     }
 
-    public static AutoService getInstance() {
-        if (instance == null) {
-            instance = new AutoService(AutoRepository.getInstance());
-        }
-        return instance;
-    }
 
     @Override
     public Auto createRandomVehicle() {

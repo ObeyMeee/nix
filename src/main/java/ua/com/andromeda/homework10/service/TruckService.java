@@ -5,24 +5,22 @@ import ua.com.andromeda.homework10.model.Manufacturer;
 import ua.com.andromeda.homework10.model.Truck;
 import ua.com.andromeda.homework10.repository.CrudRepository;
 import ua.com.andromeda.homework10.repository.TruckRepository;
+import ua.com.andromeda.homework19.annotations.Autowired;
+import ua.com.andromeda.homework19.annotations.Qualifier;
+import ua.com.andromeda.homework19.annotations.Singleton;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Singleton
 public class TruckService extends VehicleService<Truck> {
-    private static TruckService instance;
 
-    private TruckService(CrudRepository<Truck> repository) {
+    @Autowired
+    public TruckService(@Qualifier(TruckRepository.class) CrudRepository<Truck> repository) {
         super(repository);
     }
 
-    public static TruckService getInstance() {
-        if (instance == null) {
-            instance = new TruckService(TruckRepository.getInstance());
-        }
-        return instance;
-    }
 
     @Override
     public Truck createRandomVehicle() {
