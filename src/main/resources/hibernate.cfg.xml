@@ -5,15 +5,15 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.url">
-            jdbc:postgresql://ec2-18-208-55-135.compute-1.amazonaws.com/dfn7rh7jm4g1v9
+            jdbc:postgresql://localhost:5432/test_hibernate
         </property>
-        <property name="hibernate.connection.username">beuphqsiyszphy</property>
+        <property name="hibernate.connection.username">postgres</property>
         <property name="hibernate.connection.password">
-            b40be8cd73627658411c1e726abaef3a140f0e97bf043463d9d88baff83dbfac
+            1337
         </property>
         <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQL95Dialect</property>
 
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="show_sql">false</property>
 
         <property name="hibernate.current_session_context_class">thread</property>

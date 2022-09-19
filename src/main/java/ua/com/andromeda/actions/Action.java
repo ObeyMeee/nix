@@ -5,6 +5,8 @@ import lombok.Getter;
 
 @Getter
 public enum Action {
+    MULTITHREADING_PRINT("Print message 50 times by different threads", new MultithreadingPrinter()),
+    COUNT_PRIME_NUMBERS("Count prime numbers", new PrimeNumbersCounter()),
     SAVE("Save random vehicle", new Save()),
     SAVE_ALL("Save 10 random vehicles", new SaveAll()),
     FIND("Find by id", new Find()),
