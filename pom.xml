@@ -6,7 +6,11 @@
 
     <groupId>ua.com.andromeda</groupId>
     <artifactId>nix</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>ServletsHomework</module>
+    </modules>
     <name>nix</name>
 
     <properties>
