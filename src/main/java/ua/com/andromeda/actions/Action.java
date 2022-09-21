@@ -5,7 +5,6 @@ import lombok.Getter;
 
 @Getter
 public enum Action {
-    FLYWAY("Do migration", new FlywayCommand()),
     SAVE("Save random vehicle", new Save()),
     SAVE_ALL("Save 10 random vehicles", new SaveAll()),
     FIND("Find by id", new Find()),
